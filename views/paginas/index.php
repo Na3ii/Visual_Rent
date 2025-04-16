@@ -46,7 +46,7 @@
 </section>
 
 <section class="contacto">
-    <div class="contacto__contenedor">
+    <div class="contacto__contenedor-inicio">
         <h2 class="contacto__heading">Contáctanos</h2>      
         <p class="contacto__descripcion">Déjanos tu mensaje y nos pondremos en contacto contigo lo antes posible.</p>
         <div class="inicio__boton-contenedor">

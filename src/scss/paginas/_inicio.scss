@@ -31,7 +31,7 @@
     margin: 7rem 0 5rem 0;
 }
 
-.contacto__contenedor {
+.contacto__contenedor-inicio {
     @include m.contenedor;
     min-height: 50rem;
     background-image: linear-gradient(to right, rgba(v.$gris, 1), rgba(v.$negro, .3)), 
