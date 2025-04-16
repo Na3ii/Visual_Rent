@@ -916,8 +916,36 @@ h3 {
   }
 }
 
+.boton__servicios {
+  margin-bottom: 3rem;
+}
+
 .productos__heading {
   margin: 7rem 0 5rem 0;
+}
+
+.contacto__contenedor {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+  min-height: 50rem;
+  background-image: linear-gradient(to right, #64748b, rgba(26, 27, 21, 0.3)), -webkit-image-set(url(../img/mujer-en-callcenter-usando-B2Chat.webp) 1x, url(../img/header_visual_rent_1.avif) 1x, url(../img/header_visual_rent_1.jpg) 1x);
+  background-image: linear-gradient(to right, #64748b, rgba(26, 27, 21, 0.3)), image-set(url(../img/mujer-en-callcenter-usando-B2Chat.webp) 1x, url(../img/header_visual_rent_1.avif) 1x, url(../img/header_visual_rent_1.jpg) 1x);
+  background-repeat: no-repeat;
+  background-size: cover, cover;
+  background-position: center, center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.contacto__heading {
+  text-transform: uppercase;
+  color: rgb(62.1615720524, 151.5502183406, 217.8384279476);
+}
+
+.contacto__descripcion {
+  color: #FFFFFF;
+  font-size: 2.5rem;
 }
 
 .formulario {

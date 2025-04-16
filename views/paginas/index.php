@@ -47,7 +47,7 @@
 
 <section class="contacto">
     <div class="contacto__contenedor">
-        <h2 class="galeria__heading">Contáctanos</h2>      
+        <h2 class="contacto__heading">Contáctanos</h2>      
         <p class="contacto__descripcion">Déjanos tu mensaje y nos pondremos en contacto contigo lo antes posible.</p>
         <div class="inicio__boton-contenedor">
             <a class="inicio__boton" href="/contacto">Contactar</a>
