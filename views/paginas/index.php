@@ -40,7 +40,7 @@
             <?php endforeach; ?>
         </div>
     </div>
-    <div class="inicio__boton-contenedor">
+    <div class="inicio__boton-contenedor boton__servicios">
         <a class="inicio__boton" href="/servicios">Ver Todos los Servicios</a>
     </div>
 </section>
