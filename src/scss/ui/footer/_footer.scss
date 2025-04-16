@@ -1,0 +1,45 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.footer {
+    background-color: v.$azul;
+    margin-top: 5rem;
+    padding-top: 3rem;
+    color: v.$blanco;
+    
+    &__grid {
+        @include m.contenedor;
+        @include m.tablet {
+            @include m.grid(2, 3rem)
+        }
+    }
+    &__logo {
+        max-width: 200px;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease;
+        margin: 1rem;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+    &__texto {
+        line-height: 2;
+        text-align: center;
+        @include m.tablet {
+            text-align: left;
+        }
+    }
+    &__copyright {
+        background-color: darken(v.$azul, 10);
+        margin: 0;
+        padding: 1.4rem 0;
+        text-align: center;
+        font-weight: v.$regular;
+
+        &--regular {
+            font-weight: v.$delgada;
+        }
+    }
+}
+

@@ -1,0 +1,28 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.inicio__boton-contenedor {
+    margin-top: 2rem;
+    max-width: 90%;
+    @include m.tablet {        
+        width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+    }
+}
+
+.inicio__boton {
+    @include m.boton(v.$azul, v.$blanco);
+    text-transform: uppercase;
+    margin: 2rem 2rem;
+    border-radius: .5rem;
+    @include m.tablet {
+        width: auto;
+    }
+}
+
+.productos__heading {
+    margin: 7rem 0 5rem 0;
+}

@@ -1,0 +1,26 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contacto {
+    &__heading {
+        @include m.nombre-pagina;
+        color: v.$azul;
+    }
+
+    &__descripcion {
+        @include m.descripcion-pagina;
+        margin-bottom: 3rem;
+    }
+    &__contenedor {
+        background-color: v.$blanco;
+        margin: 2rem;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    
+    &__formulario {
+        @extend .contacto__contenedor;
+        @include m.contenedor-md;
+        @include m.shadow;
+    }
+}

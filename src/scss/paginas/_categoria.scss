@@ -1,0 +1,66 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.servicios__grid {
+    @include m.contenedor;
+    @include m.grid(1, 2rem);
+    @include m.tablet {
+        @include m.grid(2, 2rem); // 2 por fila con espacio de 2rem
+        margin-top: 4rem;
+    }
+    @include m.desktop {
+        @include m.grid(3, 2rem); // 2 por fila con espacio de 2rem
+        margin-top: 4rem;
+    }
+    
+}
+
+.servicio__card {
+    background-color: v.$blanco;
+    border-radius: 1rem;
+    overflow: hidden;
+    text-align: center;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+    margin: 3rem 0 3rem 0;
+}
+.categoria__heading {
+    color: v.$azul;
+}
+.servicio__imagen {
+    width: 50%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: .5rem;
+    margin-bottom: 1.5rem;
+}
+
+.servicio__nombre {
+    font-size: 3rem;
+    font-weight: v.$bold;
+    color: v.$azul;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.servicio__descripcion {
+    font-size: 1.6rem;
+    color: v.$gris;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+.contenedor__boton {
+    @include m.tablet {        
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+.servicio__boton {
+    @include m.boton(v.$azul, v.$blanco);
+    text-transform: uppercase;
+    margin: 2rem 2rem;
+    border-radius: .5rem;
+    @include m.tablet {
+        width: auto;
+    }
+}
