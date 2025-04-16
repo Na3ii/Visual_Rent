@@ -14,7 +14,7 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin="" defer></script>
 </head>
 <body>
-    <?php 
+    <?php
         include_once __DIR__ .'/templates/header.php';
         echo $contenido;
         include_once __DIR__ .'/templates/footer.php'; 

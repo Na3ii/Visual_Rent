@@ -28,11 +28,12 @@ class Email {
          // create a new object
          $mail = new PHPMailer();
          $mail->isSMTP();
-         $mail->Host = $_ENV['EMAIL_HOST'];
+         $mail->Host = getenv('EMAIL_HOST');
          $mail->SMTPAuth = true;
-         $mail->Port = $_ENV['EMAIL_PORT'];
-         $mail->Username = $_ENV['EMAIL_USER'];
-         $mail->Password = $_ENV['EMAIL_PASS'];
+         $mail->Port = getenv('EMAIL_PORT');
+         $mail->Username = getenv('EMAIL_USER');
+         $mail->Password = getenv('EMAIL_PASS');
+         $mail->SMTPSecure = 'ssl';
      
          $mail->setFrom('no-reply@visualrent.cl');
          $mail->addAddress($this->email, $this->nombre);
@@ -55,7 +56,7 @@ class Email {
                             <p style="color: #555;">Hola <strong>' . $this->nombre . '</strong>, gracias por registrarte.</p>
                             <p style="color: #555;">Por favor confirma tu cuenta haciendo clic en el botón a continuación:</p>
                             <p>
-                            <a href="' . $_ENV['HOST'] . '/confirmar-cuenta?token=' . $this->token . '" style="background-color: #5c6bc0; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px;">Confirmar Cuenta</a>
+                            <a href="' . getenv('HOST') . '/confirmar-cuenta?token=' . $this->token . '" style="background-color: #5c6bc0; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px;">Confirmar Cuenta</a>
                             </p>
                             <p style="color: #999; font-size: 12px;">Si tú no creaste esta cuenta, puedes ignorar este mensaje.</p>
                         </td>
@@ -79,11 +80,12 @@ class Email {
         // create a new object
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Host = getenv('EMAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Port = $_ENV['EMAIL_PORT'];
-        $mail->Username = $_ENV['EMAIL_USER'];
-        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->Port = getenv('EMAIL_PORT');
+        $mail->Username = getenv('EMAIL_USER');
+        $mail->Password = getenv('EMAIL_PASS');
+        $mail->SMTPSecure = 'ssl';
     
         $mail->setFrom('no-reply@visualrent.cl');
         $mail->addAddress($this->email, $this->nombre);
@@ -106,7 +108,7 @@ class Email {
                             <p style="color: #555;">Hola <strong>' . $this->nombre . '</strong>, has solicitado restablecer tu contraseña.</p>
                             <p style="color: #555;">Haz clic en el siguiente botón para continuar:</p>
                             <p>
-                            <a href="' . $_ENV['HOST'] . '/recuperar?token=' . $this->token . '" style="background-color: #e53935; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px;">Reestablecer Contraseña</a>
+                            <a href="' . getenv('HOST') . '/recuperar?token=' . $this->token . '" style="background-color: #e53935; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px;">Reestablecer Contraseña</a>
                             </p>
                             <p style="color: #999; font-size: 12px;">Si tú no solicitaste este cambio, ignora este correo.</p>
                         </td>
@@ -126,11 +128,12 @@ class Email {
     public function enviarFormularioContacto() {
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Host = getenv('EMAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Port = $_ENV['EMAIL_PORT'];
-        $mail->Username = $_ENV['EMAIL_USER'];
-        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->Port = getenv('EMAIL_PORT');
+        $mail->Username = getenv('EMAIL_USER');
+        $mail->Password = getenv('EMAIL_PASS');
+        $mail->SMTPSecure = 'ssl';
     
         $mail->setFrom('no-reply@visualrent.cl', 'Sitio Web VisualRent');
         $mail->addAddress('contacto@visualrent.cl'); // Correo de destino
@@ -214,17 +217,23 @@ class Email {
     
         $mail->Body = $contenido;
     
-        $mail->send();
+        if (!$mail->send()) {
+            error_log('Error al enviar confirmación al usuario: ' . $mail->ErrorInfo);
+        };
+
+        $mail->SMTPDebug = 2; // o 3 para más detalles
+        $mail->Debugoutput = 'html';
     }
 
     public function enviarConfirmacionContactoUsuario() {
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Host = getenv('EMAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Port = $_ENV['EMAIL_PORT'];
-        $mail->Username = $_ENV['EMAIL_USER'];
-        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->Port = getenv('EMAIL_PORT');
+        $mail->Username = getenv('EMAIL_USER');
+        $mail->Password = getenv('EMAIL_PASS');
+        $mail->SMTPSecure = 'ssl';
     
         $mail->setFrom('no-reply@visualrent.cl', 'Visual Rent');
         $mail->addAddress($this->email, $this->nombre);
