@@ -106,14 +106,14 @@
     <meta name="description" content="<?php echo htmlspecialchars($metaDescription); ?>">
     <meta name="keywords" content="arriendo audiovisual, arriendo de totem, alquiler de pantallas informativas digitales, totem publicitarios con pantalla táctil, Arriendo pendones LED, Pantallas LED para eventos corporativos, Renta de videowall LED, sistemas de audio para conferencias, equipos eventos, iluminación, sonido, pantallas LED, visual rent, eventos Chile">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Visual Rent | Arriendo de Equipos Audiovisuales para Eventos">
-    <meta property="og:description" content="Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.">
+    <meta property="og:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($ogDescription); ?>">
     <meta property="og:image" content="https://visualrent.cl/img/og-image.jpg"> <!-- Imagen de 1200x630px -->
     <meta property="og:url" content="https://visualrent.cl/<?php echo $vista ?? ''; ?>">
     <meta property="og:site_name" content="Visual Rent">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Visual Rent | Arriendo de Equipos Audiovisuales para Eventos">
-    <meta name="twitter:description" content="Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.">
+    <meta name="twitter:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+    <meta name="twitter:description" content="<?php echo htmlspecialchars($ogDescription); ?>">
     <meta name="twitter:image" content="https://visualrent.cl/img/og-image.jpg">
     <meta name="theme-color" content="#257ec0">
     <meta name="apple-mobile-web-app-capable" content="yes">
