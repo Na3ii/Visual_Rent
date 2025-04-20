@@ -1,6 +1,6 @@
 <main class="servicios">
-    <h2 class="servicios__heading"><?php echo $titulo; ?></h2>
-    <p class="servicios__descripcion">Elige una categoría para ver los servicios que ofrecemos:</p>
+    <h1 class="servicios__heading"><?php echo $titulo; ?></h1>
+    <p class="servicios__descripcion">Visual Rent ofrece soluciones creativas y tecnológicas para todo tipo de eventos.</p>
 
     <div class="categorias__grid">
         <?php foreach($categorias as $categoria): ?>

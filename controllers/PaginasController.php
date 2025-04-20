@@ -133,7 +133,7 @@ class PaginasController {
         $clases_masonry = ['masonry-sm', 'masonry-md', 'masonry-lg'];
 
         $router->render('paginas/galeria', [
-            'titulo' => 'Galería',
+            'titulo' => 'Galería de Proyectos - Pantallas LED, Tótems y Eventos',
             'imagenes' => $imagenes,
             'paginacion' => $paginacion -> paginacion(),
             'clases_masonry' => $clases_masonry,

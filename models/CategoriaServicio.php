@@ -12,6 +12,8 @@ class CategoriaServicio extends ActiveRecord {
     public $imagen;
     public $url;
 
+    public $imagen_actual;
+
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;

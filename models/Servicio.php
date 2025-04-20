@@ -12,6 +12,8 @@ class Servicio extends ActiveRecord {
     public $categoria_id;
     public $imagen;
 
+    public $imagen_actual;
+
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;

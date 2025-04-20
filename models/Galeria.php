@@ -11,6 +11,8 @@ class Galeria extends ActiveRecord {
     public $imagen;
     public $descripcion;
 
+    public $imagen_actual;
+
     public function __construct($args = []) {
         $this->id = $args['id'] ?? null;
         $this->imagen = $args['imagen'] ?? '';

@@ -17,6 +17,8 @@ class Producto extends ActiveRecord {
     public $precio_tactil;
     public $imagen;
 
+    public $imagen_actual;
+
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
