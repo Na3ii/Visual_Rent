@@ -17,12 +17,34 @@ class PaginasController {
         $productos = Producto :: getVarios(4);
         $categorias = CategoriaServicio::getVarios(3);
         $imagenes = Galeria::getVarios(3);
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "LocalBusiness",
+            "name" => "Visual Rent",
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "url" => "https://visualrent.cl",
+            "telephone" => "+56 9 2051 9944",
+            "address" => [
+                "@type" => "PostalAddress",
+                "streetAddress" => "Avenida Ricardo Lyon 1351, Providencia",
+                "addressLocality" => "Santiago",
+                "addressCountry" => "CL"
+            ],
+            "description" => "Arriendo de equipos audiovisuales: tótems digitales, pantallas y pendones LED para eventos.",
+            "openingHours" => "Mo-Sa 08:00-20:00",
+            "sameAs" => [
+                "https://www.instagram.com/visualrentchile",
+                "https://www.facebook.com/visualrent",
+            ],
+        ];
         
         $router->render('paginas/index', [
             'titulo' => 'Inicio',
             'productos' => $productos,
             'categorias' => $categorias,
             'imagenes' => $imagenes,
+            'jsonLD' => $jsonLD,
         ]);
     }
     
@@ -47,11 +69,37 @@ class PaginasController {
 
         $productos = Producto :: paginar($registros_por_pagina, $paginacion -> offset());
 
+        // Armar array de productos en formato Schema.org
+        $productosLD = [];
+        foreach ($productos as $producto) {
+            $productosLD[] = [
+                "@context" => "https://schema.org",
+                "@type" => "Product",
+                "name" => $producto->nombre,
+                "description" => $producto->descripcion,
+                "image" => $producto->imagen,
+                "offers" => [
+                    "@type" => "Offer",
+                    "priceCurrency" => "CLP", // o tu moneda
+                    "price" => $producto->precio_informativo,
+                    "availability" => "https://schema.org/InStock"
+                ]
+            ];
+        }
+
+        // Si hay más de uno, usamos un array con "@graph"
+        $jsonLD = count($productosLD) > 1 ? [
+            "@context" => "https://schema.org",    
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@graph" => $productosLD
+        ] : $productosLD[0];
+
         
         $router->render('paginas/catalogo', [
             'titulo' => 'Catalogo',
             'productos' => $productos,
             'paginacion' => $paginacion -> paginacion(),
+            'jsonLD' => $jsonLD
         ]);
     }
 
@@ -78,9 +126,33 @@ class PaginasController {
         
         $categorias = CategoriaServicio::all('ASC');
 
+        $serviciosLD = [];
+        foreach ($categorias as $categoria) {
+            $serviciosLD[] = [
+                "@context" => "https://schema.org",
+                "@type" => "Service",
+                "name" => $categoria->nombre,
+                "description" => $categoria->descripcion,
+                "image" => $categoria->imagen,
+                "offers" => [
+                    "@type" => "Offer",
+                    "priceCurrency" => "CLP",
+                    "availability" => "https://schema.org/InStock"
+                ]
+            ];
+        }
+
+        // Si hay más de uno, usamos un array con "@graph"
+        $jsonLD = count($serviciosLD) > 1 ? [
+            "@context" => "https://schema.org",            
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@graph" => $serviciosLD
+        ] : $serviciosLD[0];
+
         $router->render('paginas/servicios', [
             'titulo' => 'Nuestros Servicios',
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'jsonLD' => $jsonLD
         ]);
     }
     
@@ -94,6 +166,28 @@ class PaginasController {
     
         $servicios = Servicio::belongsTo('categoria_id', $id);
         $categoria = CategoriaServicio::find($id);
+
+        $serviciosLD = [];
+        foreach ($servicios as $servicio) {
+            $serviciosLD[] = [
+                "@context" => "https://schema.org",
+                "@type" => "Service",
+                "name" => $servicio->nombre,
+                "description" => $servicio->descripcion,
+                "image" => $servicio->imagen,
+                "offers" => [
+                    "@type" => "Offer",
+                    "priceCurrency" => "CLP",
+                    "availability" => "https://schema.org/InStock"
+                ]
+            ];
+        }
+
+        // Si hay más de uno, usamos un array con "@graph"
+        $jsonLD = count($serviciosLD) > 1 ? [
+            "@context" => "https://schema.org",
+            "@graph" => $serviciosLD
+        ] : $serviciosLD[0];
     
         if (!$categoria) {
             header('Location: /servicios');
@@ -103,7 +197,8 @@ class PaginasController {
         $router->render('paginas/categoria', [
             'titulo' => 'Servicios de ' . $categoria->nombre,
             'servicios' => $servicios,
-            'categoria' => $categoria
+            'categoria' => $categoria,
+            'jsonLD' => $jsonLD
         ]);
     }
 
@@ -132,11 +227,28 @@ class PaginasController {
         $imagenes = Galeria :: paginar($registros_por_pagina, $paginacion -> offset());
         $clases_masonry = ['masonry-sm', 'masonry-md', 'masonry-lg'];
 
+        $imagesLD = [];
+        foreach ($imagenes as $img) {
+            $imagesLD[] = [
+                "@type" => "ImageObject",
+                "description" => $img->descripcion, // si tienes
+            ];
+        }
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@type" => "CollectionPage",
+            "name" => "Galería de Productos",
+            "mainEntity" => $imagesLD
+        ];
+
         $router->render('paginas/galeria', [
-            'titulo' => 'Galería de Proyectos - Pantallas LED, Tótems y Eventos',
+            'titulo' => 'Galería de Proyectos y Eventos',
             'imagenes' => $imagenes,
             'paginacion' => $paginacion -> paginacion(),
             'clases_masonry' => $clases_masonry,
+            'jsonLD' => $jsonLD
         ]);
     }
     
@@ -175,10 +287,21 @@ class PaginasController {
             }
         }
 
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@type" => "ContactPage",
+            "name" => "Contacto - VisualRent",
+            "mainEntity" => "LocalBusiness",
+            "description" => "Contáctanos para arriendo de equipos audiovisuales. Pantallas LED, tótems digitales y más.",
+            "url" => "https://visualrent.cl/contacto"
+        ];
+
         $router->render('paginas/contacto', [
             'titulo' => 'Contacto',
             'contacto' => $contacto,
-            'alertas' => $alertas
+            'alertas' => $alertas,
+            'jsonLD' => $jsonLD
         ]);
     }
 }

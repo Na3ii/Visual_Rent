@@ -9,100 +9,12 @@
     $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
     $ogTitle = "Visual Rent | Arriendo de Equipos Audiovisuales para Eventos";
     $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
-
-    if (isset($vista)) {
-        if ($vista === 'servicios') { 
-            $metaDescription ="Visual Rent ofrece soluciones creativas y tecnológicas para tus eventos: diseño gráfico impactante, asistencia técnica en terreno, desarrollo de software personalizado para pantallas interactivas, DJs para ambientación sonora y sistemas de iluminación perimetral inteligentes.";
-            $ogTitle = "Servicios Visual Rent | Soluciones Tecnológicas para Eventos";
-            $ogDescription = $metaDescription;
     ?>
-            <!-- JSON-LD para Servicios -->
-            <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Service",
-                "name": "Arriendo de Equipos Audiovisuales para Eventos",
-                "provider": {
-                    "@type": "Organization",
-                    "name": "Visual Rent",
-                    "url": "https://visualrent.cl",
-                    "logo": "https://visualrent.cl/img/logo.png"
-                },
-                "areaServed": {
-                    "@type": "Country",
-                    "name": "Chile"
-                },
-                "serviceType": "Servicios audiovisuales y tecnológicos para eventos",
-                "description": "Visual Rent ofrece soluciones integrales para eventos: diseño gráfico, asistencia técnica, desarrollo de software personalizado, DJs y ambientación, iluminación inteligente y más.",
-                "termsOfService": "https://visualrent.cl/terminos-y-condiciones",
-                "hasOfferCatalog": {
-                    "@type": "OfferCatalog",
-                    "name": "Servicios de Visual Rent",
-                    "itemListElement": [
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                        "@type": "Service",
-                        "name": "Diseño Gráfico",
-                        "description": "Transformamos ideas en impacto visual. Diseños que fusionan arte y tecnología para destacar tu marca en todos los formatos digitales."
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                        "@type": "Service",
-                        "name": "Técnico en Terreno",
-                        "description": "Llevamos la solución directamente a tu puerta. Instalaciones, soporte y asistencia técnica profesional donde lo necesites, cuando lo necesites."
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                        "@type": "Service",
-                        "name": "Desarrollo de Software",
-                        "description": "Desarrollamos juegos, formularios y apps personalizadas para tus pantallas interactivas. Si no tienes software, ¡nosotros lo creamos por ti!"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                        "@type": "Service",
-                        "name": "DJ de Ambiente",
-                        "description": "Sonido que conecta, música que transforma. Creamos atmósferas únicas con DJs expertos y ambientación sonora para eventos que se viven con los cinco sentidos."
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                        "@type": "Service",
-                        "name": "Iluminación Perimetral",
-                        "description": "Ilumina emociones, diseña ambientes. Realza espacios y crea experiencias envolventes con iluminación inteligente y estética."
-                        }
-                    }
-                    ]
-                }
-            }
-            </script>
-        <?php } elseif ($vista === 'catalogo') {
-            $metaDescription ="Descubre nuestro catálogo de productos en arriendo. Encuentra artículos para todas tus necesidades con precios competitivos y opciones de alquiler flexibles.";
-            $ogTitle = "Servicios Visual Rent | Catalogo de productos";
-            $ogDescription = $metaDescription;
-        ?>
-            <!-- JSON-LD para un Producto del Catálogo -->
-            <script type="application/ld+json">
-            {
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": "Catalogo de productos",
-            "description": "Descubre nuestro catálogo de productos en arriendo. Encuentra artículos para todas tus necesidades con precios competitivos y opciones de alquiler flexibles.",
-            "brand": {
-                "@type": "Brand",
-                "name": "Visual Rent"
-            }
-            }
-            </script>
-        <?php } ?>
-    <?php } ?>
+    <?php if (!empty($jsonLD)): ?>
+    <script type="application/ld+json">
+        <?= json_encode($jsonLD, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>
+    </script>
+    <?php endif; ?>
     <meta name="description" content="<?php echo htmlspecialchars($metaDescription); ?>">
     <meta name="keywords" content="arriendo audiovisual, arriendo de totem, alquiler de pantallas informativas digitales, totem publicitarios con pantalla táctil, Arriendo pendones LED, Pantallas LED para eventos corporativos, Renta de videowall LED, sistemas de audio para conferencias, equipos eventos, iluminación, sonido, pantallas LED, visual rent, eventos Chile">
     <meta property="og:type" content="website">
@@ -121,27 +33,6 @@
     <meta name="robots" content="index, follow">
     <meta name="author" content="Camilo Jimenez Na3ii">
     <meta http-equiv="Content-Language" content="es">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Visual Rent",
-      "image": "https://visualrent.cl/img/og-image.jpg",
-      "url": "https://visualrent.cl",
-      "telephone": "+56 9 2051 9944",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Santiago",
-        "addressCountry": "CL"
-      },
-      "description": "Arriendo de equipos audiovisuales: tótems digitales, pantallas y pendones LED para eventos.",
-      "sameAs": [
-        "https://www.instagram.com/visualrentchile",
-        "https://www.facebook.com/visualrent"
-      ]
-    }
-    </script>
     <title>Visual Rent - <?php echo isset($titulo) ? $titulo : 'Equipos Audiovisuales para Eventos'; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
