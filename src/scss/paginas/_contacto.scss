@@ -5,6 +5,7 @@
     &__heading {
         @include m.nombre-pagina;
         color: v.$azul;
+        text-transform: none !important;
     }
 
     &__descripcion {

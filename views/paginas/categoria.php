@@ -1,5 +1,5 @@
 <main class="categoria">
-    <h2 class="categoria__heading"><?php echo $titulo; ?></h2>
+    <h1 class="categoria__heading"><?php echo $titulo; ?></h1>
 
     <div class="servicios__grid">
         <?php foreach($servicios as $servicio): ?>

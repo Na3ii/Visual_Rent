@@ -722,6 +722,7 @@ h3 {
   margin: 6rem 0 3rem 0;
   text-align: center;
   color: #257ec0;
+  text-transform: none !important;
 }
 .contacto__descripcion {
   text-align: center;
@@ -946,6 +947,69 @@ h3 {
 .contacto__descripcion {
   color: #FFFFFF;
   font-size: 2.5rem;
+}
+
+.politica__contenedor, .terminos__contenedor,
+.aviso__contenedor, .faq__contenedor, .garantia__contenedor,
+.pago__contenedor, .quienes__contenedor, .mision__contenedor,
+.clientes__contenedor, .alianzas__contenedor,
+.cookies__contenedor {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+}
+.politica__heading, .terminos__heading,
+.aviso__heading, .faq__heading, .garantia__heading,
+.pago__heading, .quienes__heading, .mision__heading,
+.clientes__heading, .alianzas__heading,
+.cookies__heading {
+  font-family: "Outfit", sans-serif;
+  font-weight: 900;
+  margin: 2rem 0;
+  margin: 6rem 0 3rem 0;
+  text-align: center;
+  color: #257ec0;
+}
+.politica__parrafo, .terminos__parrafo,
+.aviso__parrafo, .faq__parrafo, .garantia__parrafo,
+.pago__parrafo, .quienes__parrafo, .mision__parrafo,
+.clientes__parrafo, .alianzas__parrafo,
+.cookies__parrafo {
+  font-size: 2rem;
+  color: #1E293B;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+  text-align: justify;
+}
+
+.faq__respuesta {
+  font-size: 2rem;
+  color: #1E293B;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+  text-align: justify;
+}
+
+h3 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #257ec0;
+  margin-bottom: 1rem;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--gris-claro);
+  font-size: 2rem;
+  color: var(--gris-oscuro);
+}
+
+strong {
+  font-weight: 700;
+  color: #257ec0;
 }
 
 .formulario {
@@ -1323,8 +1387,16 @@ h3 {
   .footer__grid {
     display: grid;
     gap: 3rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+    margin-bottom: 2rem;
   }
+}
+.footer__contenido {
+  min-width: 25rem;
+}
+.footer__menu-redes {
+  max-width: 15rem;
 }
 .footer__logo {
   max-width: 200px;
@@ -1344,6 +1416,42 @@ h3 {
   .footer__texto {
     text-align: left;
   }
+}
+.footer__columna {
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .footer__columna {
+    text-align: left;
+  }
+}
+.footer__titulo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+.footer__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer__lista li {
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .footer__lista li {
+    justify-content: left;
+  }
+}
+.footer__lista li a {
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+.footer__lista li a:hover {
+  color: #2ad6ca;
 }
 .footer__copyright {
   background-color: rgb(28.7598253275, 97.9388646288, 149.2401746725);

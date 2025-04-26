@@ -1,5 +1,5 @@
 <main class="auth">
-    <h2 class="auth__heading"><?php echo $titulo; ?></h2>
+    <h1 class="auth__heading"><?php echo $titulo; ?></h1>
     <p class="auth__texto">Recupera tu acceso a Visual Rent</p>
 
     <form method="POST" action="/olvide" class="formulario">

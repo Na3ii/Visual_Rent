@@ -1,5 +1,5 @@
 <main class="contacto__contenedor">
-    <h2 class="contacto__heading"><?php echo $titulo; ?></h2>
+    <h1 class="contacto__heading"><?php echo $titulo; ?></h1>
     <p class="contacto__descripcion">Déjanos tu mensaje y nos pondremos en contacto contigo lo antes posible.</p>
 
     <form 

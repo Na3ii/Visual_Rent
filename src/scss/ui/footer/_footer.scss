@@ -10,8 +10,18 @@
     &__grid {
         @include m.contenedor;
         @include m.tablet {
-            @include m.grid(2, 3rem)
+            @include m.grid(5, 3rem);
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+            margin-bottom: 2rem;
         }
+    }
+
+    &__contenido {
+        min-width: 25rem;
+    }
+
+    &__menu-redes {
+        max-width: 15rem;
     }
     &__logo {
         max-width: 200px;
@@ -30,6 +40,44 @@
             text-align: left;
         }
     }
+
+    &__columna {
+        text-align: center;
+
+        @include m.tablet {
+            text-align: left;
+        }
+    }
+
+    &__titulo {
+        font-weight: v.$bold;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    &__lista {
+        @include m.reset-lista;
+
+        li {
+            margin-bottom: 1rem;            
+            justify-content: center;
+            @include m.tablet {
+                justify-content: left;
+            }
+
+            a {
+                font-size: 1.4rem;
+                color: v.$blanco;
+                font-weight: v.$regular;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: v.$secundario;
+                }
+            }
+        }
+    }
+
     &__copyright {
         background-color: darken(v.$azul, 10);
         margin: 0;

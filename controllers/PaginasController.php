@@ -38,6 +38,10 @@ class PaginasController {
                 "https://www.facebook.com/visualrent",
             ],
         ];
+
+        $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
         
         $router->render('paginas/index', [
             'titulo' => 'Inicio',
@@ -45,6 +49,9 @@ class PaginasController {
             'categorias' => $categorias,
             'imagenes' => $imagenes,
             'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
     
@@ -94,12 +101,19 @@ class PaginasController {
             "@graph" => $productosLD
         ] : $productosLD[0];
 
+        $metaDescription = "Explora nuestro catálogo de productos para eventos: tótems interactivos, pantallas LED, pendones y juegos como el Ciclón Millonario. VisualRent tiene lo que buscas.";
+        $ogTitle = "Catálogo VisualRent: Arriendo de Tecnología para Eventos";
+        $ogDescription = "Explora categorías de productos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
+
         
         $router->render('paginas/catalogo', [
-            'titulo' => 'Catalogo',
+            'titulo' => 'Catálogo de Productos para Eventos: Tótems, Pantallas, Juegos y Más',
             'productos' => $productos,
             'paginacion' => $paginacion -> paginacion(),
-            'jsonLD' => $jsonLD
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
 
@@ -149,10 +163,17 @@ class PaginasController {
             "@graph" => $serviciosLD
         ] : $serviciosLD[0];
 
+        $metaDescription = "Descubre nuestros servicios para eventos: diseño gráfico, técnicos en terreno, iluminación, DJ y desarrollo de software. VisualRent te acompaña en cada detalle.";
+        $ogTitle = "Servicios para Eventos | VisualRent";
+        $ogDescription = "Diseño gráfico, DJ, técnicos, iluminación y desarrollo de software para eventos. VisualRent te acompaña con soluciones integrales.";
+
         $router->render('paginas/servicios', [
-            'titulo' => 'Nuestros Servicios',
+            'titulo' => 'Servicios para Eventos en Santiago – Diseño, DJ, Iluminación y Más',
             'categorias' => $categorias,
-            'jsonLD' => $jsonLD
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
     
@@ -188,6 +209,10 @@ class PaginasController {
             "@context" => "https://schema.org",
             "@graph" => $serviciosLD
         ] : $serviciosLD[0];
+
+        $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
     
         if (!$categoria) {
             header('Location: /servicios');
@@ -198,7 +223,10 @@ class PaginasController {
             'titulo' => 'Servicios de ' . $categoria->nombre,
             'servicios' => $servicios,
             'categoria' => $categoria,
-            'jsonLD' => $jsonLD
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
 
@@ -243,12 +271,19 @@ class PaginasController {
             "mainEntity" => $imagesLD
         ];
 
+        $metaDescription = "Mira cómo transformamos eventos con tecnología, diseño y creatividad. Revisa nuestra galería y conoce lo que VisualRent puede hacer por ti.";
+        $ogTitle = "Galería de Eventos | VisualRent";
+        $ogDescription = "Inspírate con nuestras instalaciones, pantallas y tótems en ferias y eventos. Resultados reales y experiencia.";
+
         $router->render('paginas/galeria', [
-            'titulo' => 'Galería de Proyectos y Eventos',
+            'titulo' => 'Galería de Proyectos – Eventos y Tecnología en Acción',
             'imagenes' => $imagenes,
             'paginacion' => $paginacion -> paginacion(),
             'clases_masonry' => $clases_masonry,
-            'jsonLD' => $jsonLD
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
     
@@ -297,11 +332,350 @@ class PaginasController {
             "url" => "https://visualrent.cl/contacto"
         ];
 
+        $metaDescription = "Contáctanos y lleva tu evento al siguiente nivel. Resolvemos tus dudas y armamos una propuesta personalizada. VisualRent: soluciones reales, atención directa.";
+        $ogTitle = "Contáctanos | VisualRen";
+        $ogDescription = "¿Tienes un evento? Escríbenos para cotizaciones, dudas o propuestas personalizadas. Atención directa y profesional.";
+
         $router->render('paginas/contacto', [
-            'titulo' => 'Contacto',
+            'titulo' => 'Contacto – Solicita tu Cotización para Eventos en Santiago',
             'contacto' => $contacto,
             'alertas' => $alertas,
-            'jsonLD' => $jsonLD
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function politicaPrivacidad(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Política de Privacidad",
+            "url" => "https://tusitio.com/politica-de-privacidad",
+            "description" => "Consulta cómo recopilamos, usamos y protegemos tu información personal."
+        ];   
+
+        $metaDescription = "Protegemos tu información. Consulta nuestra política de privacidad para saber cómo tratamos tus datos personales.";
+        $ogTitle = "Política de Privacidad - Compromiso con tus datos";
+        $ogDescription = "Tu privacidad es nuestra prioridad. Descubre cómo protegemos, usamos y almacenamos tu información personal.";     
+    
+        $router->render('paginas/politica-de-privacidad', [
+            'titulo' => 'Política de Privacidad | Protección de Datos Personales',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function terminosCondiciones(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Términos y Condiciones",
+            "url" => "https =>//tusitio.com/terminos-y-condiciones",
+            "description" => "Lee nuestros términos y condiciones de uso del sitio y nuestros servicios."
+        ];       
+
+        $metaDescription = "Conoce los términos y condiciones que regulan el uso de nuestro sitio y los servicios que ofrecemos.";
+        $ogTitle = "Términos y Condiciones - Conoce tus derechos y deberes";
+        $ogDescription = "Consulta los términos y condiciones que rigen el uso de nuestro sitio y los servicios que ofrecemos."; 
+    
+        $router->render('paginas/terminos-y-condiciones', [
+            'titulo' => 'Términos y Condiciones | Uso Responsable del Sitio',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function politicaCookies(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Política de Cookies",
+            "url" => "https =>//tusitio.com/politica-de-cookies",
+            "description" => "Esta página explica cómo usamos cookies para mejorar la experiencia del usuario y analizar el tráfico del sitio."
+        ];        
+
+        $metaDescription = "Descubre cómo utilizamos cookies para mejorar tu experiencia en nuestro sitio web y cómo puedes gestionarlas.";
+        $ogTitle = "Política de Cookies - Cómo usamos cookies en nuestro sitio";
+        $ogDescription = "Te explicamos qué cookies usamos, con qué propósito y cómo puedes gestionarlas para una navegación segura.";
+    
+        $router->render('paginas/politica-de-cookies', [
+            'titulo' => 'Política de Cookies | Experiencia Personalizada y Transparente',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function avisoLegal(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Aviso Legal",
+            "url" => "https =>//tusitio.com/aviso-legal",
+            "description" => "Información legal sobre la titularidad y el uso del sitio web."
+        ];        
+
+        $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
+        $ogTitle = "Aviso Legal - Transparencia y cumplimiento normativo";
+        $ogDescription = "Revisa la información legal sobre el propietario del sitio, derechos de autor, condiciones legales y más.";
+    
+        $router->render('paginas/aviso-legal', [
+            'titulo' => 'Aviso Legal | Información Jurídica y Transparencia',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function garantiaDevoluciones(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Garantía y Devoluciones",
+            "url" => "https =>//tusitio.com/garantia-y-devoluciones",
+            "description" => "Conoce nuestras políticas de garantía y devoluciones para todos nuestros productos y servicios."
+        ];        
+
+        $metaDescription = "Conoce nuestras políticas de garantía y devoluciones para compras de productos y servicios. Tu satisfacción es prioridad.";
+        $ogTitle = "Política de Garantías y Devoluciones - Tu satisfacción está asegurada";
+        $ogDescription = "Conoce nuestros procesos de devolución y garantías. Te ofrecemos tranquilidad en cada compra o arriendo.";
+    
+        $router->render('paginas/garantia-y-devoluciones', [
+            'titulo' => 'Garantía y Devoluciones | Compra Segura y Confiable',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function mediosPago(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name"=> "Medios de Pago",
+            "url"=> "https=>//tusitio.com/medios-de-pago",
+            "description"=> "Consulta los métodos de pago disponibles: tarjetas, transferencias, pagos en línea y más."
+        ];        
+
+        $metaDescription = "Aceptamos diversos medios de pago para tu comodidad. Descubre las opciones disponibles y cómo utilizarlas.";
+        $ogTitle = "Medios de Pago - Elige la opción que más te convenga";
+        $ogDescription = "Aceptamos múltiples medios de pago para facilitar tus compras. Revisa todas las opciones disponibles.";
+    
+        $router->render('paginas/medios-de-pago', [
+            'titulo' => 'Medios de Pago | Opciones Seguras y Flexibles',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function nosotros(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "AboutPage",
+            "name" => "Sobre Nosotros",
+            "url" => "https =>//tusitio.com/nosotros",
+            "description" => "Conoce más sobre nuestra empresa, nuestro equipo y lo que hacemos."
+        ];        
+
+        $metaDescription = "Conoce quiénes somos, nuestra historia, experiencia y compromiso en brindar soluciones innovadoras para eventos.";
+        $ogTitle = "Quiénes Somos - Innovación y experiencia a tu servicio";
+        $ogDescription = "Conoce nuestra historia, equipo y compromiso por ofrecer soluciones tecnológicas para eventos inolvidables.";
+    
+        $router->render('paginas/nosotros', [
+            'titulo' => 'Quiénes Somos | Pasión por la Tecnología y los Eventos',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function misionVision(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "AboutPage",
+            "name" => "Misión y Visión",
+            "url" => "https =>//tusitio.com/mision-y-vision",
+            "description" => "Descubre nuestra misión, visión y los valores que guían cada uno de nuestros proyectos y servicios."
+        ];        
+
+        $metaDescription = "Conoce nuestra misión, visión y valores que impulsan nuestro trabajo y compromiso con la excelencia.";
+        $ogTitle = "Misión, Visión y Valores - Lo que nos mueve cada día";
+        $ogDescription = "Descubre nuestra misión, visión y los valores que guían nuestro trabajo diario y relaciones con clientes.";
+    
+        $router->render('paginas/mision-y-vision', [
+            'titulo' => 'Misión, Visión y Valores | Nuestro Compromiso',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function clientes(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Nuestros Clientes",
+            "url" => "https =>//tusitio.com/nuestros-clientes",
+            "description" => "Conoce a las empresas y organizaciones que han confiado en nosotros para sus eventos y soluciones tecnológicas."
+        ];       
+
+        $metaDescription = "Empresas y organizaciones que confían en nuestros servicios para sus eventos. Descubre quiénes son nuestros clientes.";
+        $ogTitle = "Nuestros Clientes - Casos de éxito y confianza";
+        $ogDescription = "Grandes empresas y organizaciones han confiado en nosotros. Conoce algunos de nuestros clientes destacados."; 
+    
+        $router->render('paginas/clientes', [
+            'titulo' => 'Nuestros Clientes | Empresas que confían en nosotros',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function alianzas(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "WebPage",
+            "name" => "Alianzas",
+            "url" => "https =>//tusitio.com/alianzas",
+            "description" => "Explora nuestras alianzas estratégicas con marcas y organizaciones líderes del sector."
+        ];        
+
+        $metaDescription = "Conoce nuestras alianzas estratégicas con marcas líderes y empresas del sector tecnológico y de eventos.";
+        $ogTitle = "Alianzas - Juntos llegamos más lejos";
+        $ogDescription = "Explora nuestras alianzas con empresas líderes para ofrecer soluciones integrales en tecnología y eventos.";
+    
+        $router->render('paginas/alianzas', [
+            'titulo' => 'Alianzas Estratégicas | Colaboraciones que potencian resultados',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function preguntasFrecuentes(Router $router) {
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "FAQPage",
+            "mainEntity" => [
+                [
+                    "@type" => "Question",
+                    "name" => "¿Qué servicios ofrece VisualRent?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "En VisualRent.cl nos especializamos en el arriendo de equipos para eventos corporativos, ferias y activaciones de marca. Ofrecemos tótems interactivos, pantallas LED, sonido profesional, iluminación, efectos especiales como el Ciclón Millonario y mucho más."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿A qué regiones realizan envíos?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Principalmente operamos en Santiago y regiones cercanas. Sin embargo, dependiendo del tipo de evento y la logística, podemos evaluar envíos a otras regiones de Chile. Te recomendamos contactarnos con antelación para coordinar."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Cómo puedo cotizar un servicio?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Puedes llenar el formulario de contacto en nuestro sitio web, escribirnos directamente por WhatsApp o enviarnos un correo a contacto@visualrent.cl. Recibirás una cotización personalizada según los requerimientos de tu evento."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Qué incluye el servicio de arriendo?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Todos nuestros servicios incluyen entrega, instalación, asistencia técnica y retiro. En algunos casos también ofrecemos soporte en tiempo real durante el evento para asegurar que todo funcione correctamente."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Con cuánto tiempo de anticipación debo reservar?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Te recomendamos hacer la reserva al menos con 7 a 10 días de anticipación, especialmente en temporada alta (ferias, festividades o lanzamientos). Esto nos permite garantizar disponibilidad y una correcta planificación logística."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Qué medios de pago aceptan?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Aceptamos pagos vía transferencia bancaria, tarjetas de crédito/débito, y pagos con factura para empresas que cuenten con convenio. Consulta en Medios de Pago para más información."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Qué pasa si se daña un equipo durante el evento?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Todos nuestros equipos cuentan con mantenimiento preventivo y son revisados antes de cada entrega. En caso de daños por mal uso o negligencia, se evalúa la situación y se aplica la cláusula de garantía según lo indicado en nuestros Términos y Condiciones."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Ofrecen soporte técnico en el lugar?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Sí, dependiendo del tipo de equipo y evento, podemos incluir un técnico en terreno para garantizar el funcionamiento óptimo durante toda la actividad. Este servicio puede tener un costo adicional."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Puedo cancelar una reserva?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Las cancelaciones se deben realizar con al menos 72 horas de anticipación. Si se cancela fuera de ese plazo, puede aplicarse un cobro por costos administrativos o de preparación. Revisa nuestra sección de Garantías y Devoluciones."
+                    ]
+                ],
+                [
+                    "@type" => "Question",
+                    "name" => "¿Dónde puedo ver fotos o videos de los equipos en acción?",
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => "Puedes visitar nuestra Galería donde encontrarás imágenes y videos de eventos realizados con nuestros productos, así como testimonios de nuestros clientes."
+                    ]
+                ]
+            ]
+        ];        
+
+        $metaDescription = "Resuelve tus dudas rápidamente consultando nuestras preguntas frecuentes sobre productos, servicios y reservas.";
+        $ogTitle = "Preguntas Frecuentes - Encuentra respuestas rápidas";
+        $ogDescription = "Consulta las respuestas a las dudas más comunes sobre nuestros productos, servicios y procesos de reserva.";
+    
+        $router->render('paginas/preguntas-frecuentes', [
+            'titulo' => 'Preguntas Frecuentes | Resuelve tus dudas al instante',
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
         ]);
     }
 }

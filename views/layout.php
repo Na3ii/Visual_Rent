@@ -12,14 +12,8 @@
     </script>
     <meta name="google-site-verification" content="2c9p05aniqD4mjmzRfxaaArmLNxD1FPqMyCSj61dx1A" />
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-    <!-- Set default meta -->
-    <?php
-    $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
-    $ogTitle = "Visual Rent | Arriendo de Equipos Audiovisuales para Eventos";
-    $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
-    ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/c80734bea6f55a41cc95ef08/script.js"></script>
     <?php if (!empty($jsonLD)): ?>
     <script type="application/ld+json">
         <?= json_encode($jsonLD, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>

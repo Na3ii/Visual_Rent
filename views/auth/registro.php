@@ -1,5 +1,5 @@
 <main class="auth">
-    <h2 class="auth__heading"><?php echo $titulo; ?></h2>
+    <h1 class="auth__heading"><?php echo $titulo; ?></h1>
     <p class="auth__texto">Registrate en Visual Rent</p>
     <form method="POST" action="/registro" class="formulario">
         <div class="formulario__campo">

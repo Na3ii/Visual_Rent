@@ -103,6 +103,18 @@ $router->get('/categoria', [PaginasController::class, 'verCategoria']);
 $router->get('/galeria', [PaginasController::class, 'galeria']);
 $router->get('/contacto', [PaginasController::class, 'contacto']);
 $router->post('/contacto', [PaginasController::class, 'contacto']);
+$router->get('/preguntas-frecuentes', [PaginasController::class, 'preguntasFrecuentes']);
+$router->get('/politica-de-privacidad', [PaginasController::class, 'politicaPrivacidad']);
+$router->get('/politica-de-cookies', [PaginasController::class, 'politicaCookies']);
+$router->get('/terminos-y-condiciones', [PaginasController::class, 'terminosCondiciones']);
+$router->get('/aviso-legal', [PaginasController::class, 'avisoLegal']);
+$router->get('/nosotros', [PaginasController::class, 'nosotros']);
+$router->get('/mision-y-vision', [PaginasController::class, 'misionVision']);
+$router->get('/clientes', [PaginasController::class, 'clientes']);
+$router->get('/alianzas', [PaginasController::class, 'alianzas']);
+$router->get('/garantia-y-devoluciones', [PaginasController::class, 'garantiaDevoluciones']);
+$router->get('/medios-de-pago', [PaginasController::class, 'mediosPago']);
+
 
 
 
