@@ -32,7 +32,7 @@ function css() {
         .pipe(postcss([autoprefixer()]))
         // .pipe( postcss([autoprefixer(), cssnano()]))
         .pipe( sourcemaps.write('.'))
-        .pipe(  dest('build/css') );
+        .pipe(  dest('public/build/css') );
 }
 function javascript() {
     return src(paths.js)
@@ -41,13 +41,13 @@ function javascript() {
       .pipe(terser())
       .pipe(sourcemaps.write('.'))
       .pipe(rename({ suffix: '.min' }))
-      .pipe(dest('.build/js'))
+      .pipe(dest('./public/build/js'))
 }
 
 function imagenes() {
     return src(paths.imagenes)
         .pipe( cache(imagemin({ optimizationLevel: 3})))
-        .pipe( dest('build/img'))
+        .pipe( dest('public/build/img'))
 }
 
 function versionWebp( done ) {
@@ -56,7 +56,7 @@ function versionWebp( done ) {
     };
     src('src/img/**/*.{png,jpg}')
         .pipe( webp(opciones) )
-        .pipe( dest('build/img') )
+        .pipe( dest('public/build/img') )
     done();
 }
 
@@ -66,7 +66,7 @@ function versionAvif( done ) {
     };
     src('src/img/**/*.{png,jpg}')
         .pipe( avif(opciones) )
-        .pipe( dest('build/img') )
+        .pipe( dest('public/build/img') )
     done();
 }
 
