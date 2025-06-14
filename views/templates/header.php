@@ -19,7 +19,7 @@
             <p class="header__texto header__texto--slogan">
                 Transformamos espacios en escenarios de emociones, donde la tecnología se fusiona con la experiencia para crear momentos únicos.
             </p>
-            <a href="/catalogo" class="header__boton">Ver Catalogo</a>
+            <a href="/productos/catalogo" class="header__boton">Ver Catalogo</a>
         </div>
     </div>
 </header>
@@ -29,8 +29,8 @@
             <img class="barra__logo" src="/build/img/Visual_Rent_Horizontal.png" alt="Logo visual rent">
         </a>
         <nav class="navegacion">
-            <a href="/catalogo" class="navegacion__enlace <?php echo pagina_actual ('/catalogo')? 'navegacion__enlace--actual' : '' ?>">Cátalogo</a>
-            <a href="/servicios" class="navegacion__enlace <?php echo pagina_actual ('/servicios')? 'navegacion__enlace--actual' : '' ?>">Servicios</a>
+            <a href="/productos/index" class="navegacion__enlace <?= pagina_actual ('/producto') || pagina_actual ('/productos')? 'navegacion__enlace--actual' : '' ?>">Productos</a>
+            <a href="/servicios/index" class="navegacion__enlace <?= pagina_actual ('/servicios')? 'navegacion__enlace--actual' : '' ?>">Servicios</a>
             <a href="/galeria" class="navegacion__enlace <?php echo pagina_actual ('/galeria')? 'navegacion__enlace--actual' : '' ?>">Galería</a>
             <a href="/contacto" class="navegacion__enlace <?php echo pagina_actual ('/contacto')? 'navegacion__enlace--actual' : '' ?>">Contacto</a>
         </nav>

@@ -8,6 +8,7 @@
 </div>
 <div class="dashboard__formulario">
     <form 
+        id="miFormulario"
         method="POST" 
         action="/admin/productos/crear" 
         enctype="multipart/form-data" 
@@ -19,6 +20,6 @@
         <?php
                 require_once __DIR__ . '/../../templates/alertas.php';
         ?>
-        <input class="formulario__submit formulario__submit--registrar" type="submit" value="Registrar Producto">
+        <input class="formulario__submit formulario__submit--registrar" id="crear-producto" type="submit" value="Registrar Producto">
     </form>
 </div>

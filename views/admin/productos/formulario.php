@@ -1,5 +1,4 @@
 <fieldset class="formulario__fieldset">
-    <legend class="formulario__legend">Información Basica</legend>
     <div class="formulario__campo">
         <label class="formulario__label" for="nombre">Nombre Producto</label>
         <input 
@@ -11,11 +10,44 @@
             value="<?php echo s($producto->nombre); ?>"
         >
     </div>
+    <div class="formulario__campo">
+        <label class="formulario__label" for="og_title">Titulo para Redes Sociales</label>
+        <input 
+            class="formulario__input" 
+            type="text" 
+            id="og_title" 
+            name="og_title" 
+            placeholder="Titulo para Redes Sociales"
+            value="<?php echo s($producto->og_title); ?>"
+        >
+    </div>
+    <div class="formulario__campo">
+        <label class="formulario__label" for="og_description">Descripción para Redes Sociales</label>
+        <input 
+            class="formulario__input" 
+            type="text" 
+            id="og_description" 
+            name="og_description" 
+            placeholder="Descripción para Redes Sociales"
+            value="<?php echo s($producto->og_description); ?>"
+        >
+    </div>
+    <div class="formulario__campo">
+        <label class="formulario__label" for="meta_description">Descripción para Motores de Busqueda</label>
+        <input 
+            class="formulario__input" 
+            type="text" 
+            id="meta_description" 
+            name="meta_description" 
+            placeholder="Descripción para Motores de Busqueda"
+            value="<?php echo s($producto->meta_description); ?>"
+        >
+    </div>
 
     <div class="formulario__campo">
         <label class="formulario__label" for="descripcion">Descripcion Producto</label>
         <textarea class="formulario__input" id="descripcion" name="descripcion" placeholder="Describe en breves palabras el producto" rows="4">
-            <?php echo s($producto->descripcion); ?>
+            <?php echo s($producto->descripcion);?>
         </textarea>
     </div>
     <div class="formulario__campo">
@@ -90,29 +122,29 @@
             min="0"
             class="formulario__input"
             id="precio_tactil"
-            name="precio_tactil"
+            name="precio_tactil"    
             placeholder="Ej: 20"
             value="<?php echo s($producto->precio_tactil); ?>"
         >
     </div>
+
+    <!-- Campo para imágenes nuevas -->
     <div class="formulario__campo">
-        <label for="imagen" class="formulario__imagen">Imagen</label>
+        <label for="imagenes" class="formulario__imagen">Agregar Imágenes</label>
         <input 
             type="file"
             class="formulario__input formulario__input--file"
-            id="imagen"
-            name="imagen"
+            id="imagenes"
+            name="imagenes[]"
+            multiple
+            accept="image/*"
         >
-    </div>
-    <?php if(isset($producto->imagen_actual)) { ?>
-        <p class="formulario__texto">Imagen Actual:</p>
-        <div class="formulario__imagen-miniatura">
-            <picture class="producto__imagen">
-                <source srcset="/img/productos/<?php echo $producto->imagen; ?>.webp" type="image/webp">
-                <source srcset="/img/productos/<?php echo $producto->imagen; ?>.png" type="image/png">
-                <img class="producto__imagen" loading="lazy" width="200" height="300" 
-                src="/img/productos/<?php echo $producto->imagen; ?>.png" alt="imagen producto">
-            </picture>
+        <div id="preview-imagenes" class="imagenes-sortable">
+            <div id="preview-contenedor" data-imagenes-actuales='<?= json_encode($imagenes_actuales ?? []) ?>'>
+                <!-- JS inyectará aquí tanto las existentes (data-actual="1") como las nuevas (data-actual="0") -->
+            </div>
         </div>
-    <?php } ?>
+        <!-- Campo oculto para recopilar removidas -->
+        <input type="hidden" id="imagenes_eliminadas" name="imagenes_eliminadas" value="[]" />
+    </div>    
 </fielset>

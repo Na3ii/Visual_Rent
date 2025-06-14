@@ -1,4 +1,4 @@
-const { src, dest, watch, parallel } = require('gulp');
+const { src, dest, watch, parallel, series } = require('gulp');
 
 // CSS
 const sass = require('gulp-sass')(require('sass'));
@@ -9,15 +9,15 @@ const postcss = require('gulp-postcss');
 const sourcemaps = require('gulp-sourcemaps');
 
 // Imagenes
-const cache = require('gulp-cache');
+const newer = require('gulp-newer');
 const imagemin = require('gulp-imagemin');
 const webp = require('gulp-webp');
 const avif = require('gulp-avif');
 
 // Javascript
-const terser = require('gulp-terser-js');
-const concat = require('gulp-concat');
-const rename = require('gulp-rename')
+const terser = require('gulp-terser');
+const rename = require('gulp-rename');
+const rollup = require('gulp-rollup');
 
 
 const paths = {
@@ -26,56 +26,76 @@ const paths = {
     imagenes: 'src/img/**/*'
 }
 function css() {
+    const plugins = [autoprefixer()];
+    if (process.env.NODE_ENV === 'production') {
+        plugins.push(cssnano());
+    }
+
     return src(paths.scss)
-        .pipe( sourcemaps.init())
-        .pipe( sass({outputStyle: 'expanded'}))
-        .pipe(postcss([autoprefixer()]))
-        // .pipe( postcss([autoprefixer(), cssnano()]))
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(sass({outputStyle: 'expanded'}))
+        .pipe(postcss(plugins))
         .pipe( sourcemaps.write('.'))
         .pipe(  dest('public/build/css') );
 }
+
 function javascript() {
     return src(paths.js)
-      .pipe(sourcemaps.init())
-      .pipe(concat('bundle.js')) 
-      .pipe(terser())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(rollup({
+        input: 'src/js/app.js', // tu archivo principal
+        output: {
+            format: 'iife', // para navegador
+            name: 'App',
+            sourcemap: true, // activa los sourcemaps
+            globals: {
+                'sortablejs': 'Sortable',
+            },
+        },
+        external: ['sortablejs'],
+        allowRealFiles: true // necesario con gulp-rollup
+      }))
+      .pipe(terser({
+        ecma: 2020, // Soporte para optional chaining
+        compress: true,
+        mangle: true
+      }))
+      .pipe(rename({ 
+        basename: 'bundle', 
+        suffix: '.min' 
+      }))
       .pipe(sourcemaps.write('.'))
-      .pipe(rename({ suffix: '.min' }))
       .pipe(dest('./public/build/js'))
 }
 
 function imagenes() {
     return src(paths.imagenes)
-        .pipe( cache(imagemin({ optimizationLevel: 3})))
+        .pipe( newer('public/build/img'))
+        .pipe((imagemin({ optimizationLevel: 3})))
         .pipe( dest('public/build/img'))
 }
 
 function versionWebp( done ) {
-    const opciones = {
-        quality: 50
-    };
     src('src/img/**/*.{png,jpg}')
-        .pipe( webp(opciones) )
-        .pipe( dest('public/build/img') )
+        .pipe(webp({ quality: 50 }))
+        .pipe(dest('public/build/img'));
     done();
 }
 
 function versionAvif( done ) {
-    const opciones = {
-        quality: 50
-    };
     src('src/img/**/*.{png,jpg}')
-        .pipe( avif(opciones) )
-        .pipe( dest('public/build/img') )
+        .pipe(avif({ quality: 50 }))
+        .pipe(dest('public/build/img'));
     done();
 }
+
+const procesarImagenes = parallel(imagenes, versionWebp, versionAvif);
 
 function dev(done) {
     watch( paths.scss, css );
     watch( paths.js, javascript );
-    watch( paths.imagenes, imagenes)
-    watch( paths.imagenes, versionWebp)
-    watch( paths.imagenes, versionAvif)
+    watch(paths.imagenes, procesarImagenes);
     done()
 }
 
@@ -84,4 +104,5 @@ exports.js = javascript;
 exports.imagenes = imagenes;
 exports.versionWebp = versionWebp;
 exports.versionAvif = versionAvif;
-exports.dev = parallel( css, imagenes, versionWebp, versionAvif, javascript, dev) ;
+exports.build = parallel(css, javascript, procesarImagenes);
+exports.dev = series(exports.build, dev);

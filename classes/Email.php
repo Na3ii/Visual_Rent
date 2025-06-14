@@ -3,6 +3,8 @@
 namespace Classes;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 class Email {
 
@@ -23,27 +25,31 @@ class Email {
         $this->mensaje = $mensaje;
     }
 
+    protected function crearMailer() {
+        $mail = new PHPMailer(true); // Habilitar excepciones
+        $mail->isSMTP();
+        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Port = $_ENV['EMAIL_PORT'];
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'Visual Rent'); 
+        $mail->CharSet = 'UTF-8';
+        $mail->isHTML(true);
+
+        return $mail;
+    }
+
+
     public function enviarConfirmacion() {
+        try {
+            $mail = $this->crearMailer();
+            $mail->addAddress($this->email, $this->nombre);
+            $mail->Subject = 'Confirma tu Cuenta';
 
-         // create a new object
-         $mail = new PHPMailer();
-         $mail->isSMTP();
-         $mail->Host = getenv('EMAIL_HOST');
-         $mail->SMTPAuth = true;
-         $mail->Port = getenv('EMAIL_PORT');
-         $mail->Username = getenv('EMAIL_USER');
-         $mail->Password = getenv('EMAIL_PASS');
-         $mail->SMTPSecure = 'ssl';
-     
-         $mail->setFrom('no-reply@visualrent.cl');
-         $mail->addAddress($this->email, $this->nombre);
-         $mail->Subject = 'Confirma tu Cuenta';
-
-         // Set HTML
-         $mail->isHTML(TRUE);
-         $mail->CharSet = 'UTF-8';
-
-         $contenido = '
+            $contenido = '
             <html>
             <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
                 <table width="100%" cellpadding="0" cellspacing="0">
@@ -68,34 +74,22 @@ class Email {
             </body>
             </html>';
 
-         $mail->Body = $contenido;
+            $mail->Body = $contenido;
 
-         //Enviar el mail
-         $mail->send();
-
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar instrucciones: {$e->getMessage()}");
+            return false;
+        }
     }
 
     public function enviarInstrucciones() {
+        try {
+            $mail = $this->crearMailer();
+            $mail->addAddress($this->email, $this->nombre);
+            $mail->Subject = 'Reestablece tu password';
 
-        // create a new object
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->Host = getenv('EMAIL_HOST');
-        $mail->SMTPAuth = true;
-        $mail->Port = getenv('EMAIL_PORT');
-        $mail->Username = getenv('EMAIL_USER');
-        $mail->Password = getenv('EMAIL_PASS');
-        $mail->SMTPSecure = 'ssl';
-    
-        $mail->setFrom('no-reply@visualrent.cl');
-        $mail->addAddress($this->email, $this->nombre);
-        $mail->Subject = 'Reestablece tu password';
-
-        // Set HTML
-        $mail->isHTML(TRUE);
-        $mail->CharSet = 'UTF-8';
-
-        $contenido = '
+            $contenido = '
             <html>
             <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
                 <table width="100%" cellpadding="0" cellspacing="0">
@@ -119,32 +113,25 @@ class Email {
                 </table>
             </body>
             </html>';
-        $mail->Body = $contenido;
 
-        //Enviar el mail
-        $mail->send();
+            $mail->Body = $contenido;
+
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar instrucciones: {$e->getMessage()}");
+            return false;
+        }
     }
 
     public function enviarFormularioContacto() {
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->Host = getenv('EMAIL_HOST');
-        $mail->SMTPAuth = true;
-        $mail->Port = getenv('EMAIL_PORT');
-        $mail->Username = getenv('EMAIL_USER');
-        $mail->Password = getenv('EMAIL_PASS');
-        $mail->SMTPSecure = 'ssl';
-    
-        $mail->setFrom('no-reply@visualrent.cl', 'Sitio Web VisualRent');
-        $mail->addAddress('contacto@visualrent.cl'); // Correo de destino
-    
-        $mail->Subject = 'Nuevo mensaje desde el formulario de contacto';
-    
-        $mail->isHTML(true);
-        $mail->CharSet = 'UTF-8';
-        $fechaEnvio = date('d/m/Y H:i'); // Formato: 11/04/2025 14:30
-    
-        $contenido = '
+        try {
+            $mail = $this->crearMailer();
+            // El correo se envía a tu propia dirección de contacto
+            $mail->addAddress('contacto@visualrent.cl', 'Visual Rent Contacto'); 
+            $mail->Subject = 'Nuevo mensaje desde el formulario de contacto';
+            $fechaEnvio = date('d/m/Y H:i');
+
+            $contenido = '
             <html>
             <head>
                 <style>
@@ -215,34 +202,23 @@ class Email {
             </body>
             </html>';
     
-        $mail->Body = $contenido;
+            $mail->Body = $contenido;
     
-        if (!$mail->send()) {
-            error_log('Error al enviar confirmación al usuario: ' . $mail->ErrorInfo);
-        };
-
-        $mail->SMTPDebug = 2; // o 3 para más detalles
-        $mail->Debugoutput = 'html';
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar instrucciones: {$e->getMessage()}");
+            return false;
+        }
     }
 
     public function enviarConfirmacionContactoUsuario() {
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->Host = getenv('EMAIL_HOST');
-        $mail->SMTPAuth = true;
-        $mail->Port = getenv('EMAIL_PORT');
-        $mail->Username = getenv('EMAIL_USER');
-        $mail->Password = getenv('EMAIL_PASS');
-        $mail->SMTPSecure = 'ssl';
+        try {
+            $mail = $this->crearMailer();
+            // Se envía una copia de confirmación al usuario que llenó el formulario
+            $mail->addAddress($this->email, $this->nombre);
+            $mail->Subject = 'Hemos recibido tu mensaje';
     
-        $mail->setFrom('no-reply@visualrent.cl', 'Visual Rent');
-        $mail->addAddress($this->email, $this->nombre);
-        $mail->Subject = 'Hemos recibido tu mensaje';
-    
-        $mail->isHTML(TRUE);
-        $mail->CharSet = 'UTF-8';
-    
-        $contenido = '
+            $contenido = '
             <html>
             <head>
                 <style>
@@ -296,8 +272,12 @@ class Email {
             </body>
             </html>';
     
-        $mail->Body = $contenido;
+            $mail->Body = $contenido;
     
-        $mail->send();
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar instrucciones: {$e->getMessage()}");
+            return false;
+        }
     }
 }

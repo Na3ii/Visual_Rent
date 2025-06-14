@@ -8,9 +8,5 @@ Disallow: /models/
 Disallow: /views/admin/
 Allow: /
 
-# Evita que se indexen páginas con parámetros de sesión o filtros
-Disallow: /*?*
-Disallow: /*&*
-
 # Sitemap
 Sitemap: https://visualrent.cl/sitemap.xml

@@ -16,6 +16,7 @@ use Controllers\ServiciosController;
 use Controllers\ClientesController;
 use Controllers\PaginasController;
 use Controllers\CategoriaServicioController;
+use Controllers\CategoriaProductoController;
 
 $router = new Router();
 
@@ -61,6 +62,13 @@ $router->get('/admin/productos/editar', [ProductosController::class, 'editar']);
 $router->post('/admin/productos/editar', [ProductosController::class, 'editar']);
 $router->post('/admin/productos/eliminar', [ProductosController::class, 'eliminar']);
 
+$router->get('/admin/categoria-productos', [CategoriaProductoController::class, 'verCategoria']);
+$router->get('/admin/categoria-productos/crear', [CategoriaProductoController::class, 'crear']);
+$router->post('/admin/categoria-productos/crear', [CategoriaProductoController::class, 'crear']);
+$router->get('/admin/categoria-productos/editar', [CategoriaProductoController::class, 'editar']);
+$router->post('/admin/categoria-productos/editar', [CategoriaProductoController::class, 'editar']);
+$router->post('/admin/categoria-productos/eliminar', [CategoriaProductoController::class, 'eliminar']);
+
 // servicios
 $router->get('/admin/servicios', [ServiciosController::class, 'index']);
 $router->get('/admin/servicios/crear', [ServiciosController::class, 'crear']);
@@ -97,12 +105,20 @@ $router->get('/api/productos', [PaginasController::class, 'obtenerProducto']);
 //***************AREA PUBLICA**************//
 
 $router->get('/', [PaginasController::class, 'index']);
-$router->get('/catalogo', [PaginasController::class, 'catalogo']);
-$router->get('/servicios', [PaginasController::class, 'servicios']);
-$router->get('/categoria', [PaginasController::class, 'verCategoria']);
+
+$router->get('/productos/index', [PaginasController::class, 'productos']);
+$router->get('/productos/catalogo', [PaginasController::class, 'catalogo']);
+$router->get('/productos/categoria', [PaginasController::class, 'categoriaProducto']);
+$router->get('/producto', [PaginasController::class, 'detalleProducto']);
+
+$router->get('/servicios/index', [PaginasController::class, 'servicios']);
+$router->get('/servicios/categoria', [PaginasController::class, 'categoriaServicio']);
+
 $router->get('/galeria', [PaginasController::class, 'galeria']);
+
 $router->get('/contacto', [PaginasController::class, 'contacto']);
 $router->post('/contacto', [PaginasController::class, 'contacto']);
+
 $router->get('/preguntas-frecuentes', [PaginasController::class, 'preguntasFrecuentes']);
 $router->get('/politica-de-privacidad', [PaginasController::class, 'politicaPrivacidad']);
 $router->get('/politica-de-cookies', [PaginasController::class, 'politicaCookies']);
@@ -114,8 +130,5 @@ $router->get('/clientes', [PaginasController::class, 'clientes']);
 $router->get('/alianzas', [PaginasController::class, 'alianzas']);
 $router->get('/garantia-y-devoluciones', [PaginasController::class, 'garantiaDevoluciones']);
 $router->get('/medios-de-pago', [PaginasController::class, 'mediosPago']);
-
-
-
 
 $router->comprobarRutas();

@@ -8,6 +8,7 @@
 </div>
 <div class="dashboard__formulario">
     <form 
+        id="miFormulario"
         method="POST" 
         enctype="multipart/form-data" 
         class="formulario"

@@ -117,7 +117,7 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
-    // Obtener Registros con cierta cantidad
+    // Obtener 1 Registro
     public static function get($limite) {
         $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT {$limite} " ;
         $resultado = self::consultarSQL($query);
@@ -208,9 +208,14 @@ class ActiveRecord {
 
         // Resultado de la consulta
         $resultado = self::$db->query($query);
+
+        if ($resultado) {
+            $this->id = self::$db->insert_id; // <-- ESTA LÍNEA ES FUNDAMENTAL
+        }
+
         return [
            'resultado' =>  $resultado,
-           'id' => self::$db->insert_id
+           'id' => $this->id
         ];
     }
 
@@ -241,5 +246,18 @@ class ActiveRecord {
         $query = "DELETE FROM "  . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
         $resultado = self::$db->query($query);
         return $resultado;
+    }
+
+    // Obtener el Valor de una columna específica
+    public function obtenerValorColumna($columnaConsulta, $columna, $valor) {
+        $query = "SELECT {$columnaConsulta} FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
+        $resultado = self::$db->query($query);
+
+        if($resultado && $resultado->num_rows > 0) {
+            $registro = $resultado->fetch_assoc();
+            return $registro[$columnaConsulta];
+        }
+
+        return null;
     }
 }

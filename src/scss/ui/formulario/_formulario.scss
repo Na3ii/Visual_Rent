@@ -106,3 +106,54 @@
         }
     }
 }
+
+.thumb {
+    width: 100px;
+    height: auto;
+    margin: 5px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.preview-imagen {
+    display: flex;
+    position: relative;
+    margin: 1rem;
+    text-align: center;
+    align-items: center;
+}
+
+.preview-imagen img.thumb {
+    max-width: 150px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.preview-imagen input.descripcion-imagen {
+    display: inline-block;
+    max-width: 15rem;
+    width: auto;
+    margin-top: 5px;
+    font-size: 1.8rem;
+    padding: 1rem;
+    border: 1px solid darken(v.$gris-claro, 20);
+    border-radius: .5rem;
+}
+
+.btn-eliminar {
+    position: absolute;
+    top: -5px;
+    left: -1rem;
+    background: red;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+
+    &:hover {
+        background: darken(red, 10%);
+    }
+}

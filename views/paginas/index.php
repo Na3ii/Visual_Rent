@@ -5,9 +5,9 @@
             <?php foreach($productos as $producto) { ?>
                 <div class="producto">
                     <picture class="producto__imagen">
-                        <source srcset="/img/productos/<?php echo $producto->imagen; ?>.webp" type="image/webp">
-                        <source srcset="/img/productos/<?php echo $producto->imagen; ?>.png" type="image/png">
-                        <img class="producto__imagen" src="/img/productos/<?php echo $producto->imagen; ?>.png" alt="Imagen Producto">
+                        <source srcset="/img/productos/<?php echo $producto->imagen_url; ?>.webp" type="image/webp">
+                        <source srcset="/img/productos/<?php echo $producto->imagen_url; ?>.png" type="image/png">
+                        <img class="producto__imagen" src="/img/productos/<?php echo $producto->imagen_url; ?>.png" alt="Imagen Producto">
                     </picture>
                     <div class="producto__contenido">
                         <h3 class="producto__nombre"><?php echo $producto->nombre; ?></h3>
@@ -18,7 +18,7 @@
         </div>
     </div>
         <div class="inicio__boton-contenedor">
-            <a class="inicio__boton" href="/catalogo">Ver Catálogo Completo</a>
+            <a class="inicio__boton" href="/productos/catalogo">Ver Catálogo Completo</a>
         </div>
 </section>
 
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="inicio__boton-contenedor boton__servicios">
-        <a class="inicio__boton" href="/servicios">Ver Todos los Servicios</a>
+        <a class="inicio__boton" href="/servicios/index">Ver Todos los Servicios</a>
     </div>
 </section>
 

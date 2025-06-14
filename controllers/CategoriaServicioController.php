@@ -39,7 +39,7 @@ class CategoriaServicioController {
                 })->encode('png', 80);
                 $imagen_webp = Image :: make($_FILES['imagen']['tmp_name']) -> resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
-                })->encode('png', 80);
+                })->encode('webp', 80);
 
                 $nombre_imagen = md5(uniqid(rand(), true));
 

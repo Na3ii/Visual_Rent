@@ -1,0 +1,274 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.producto-main {
+    @include m.contenedor;
+}
+
+// Estilos para la galería de imágenes del producto
+.producto__informacion {
+
+    &-principal {
+        @include m.tablet {            
+            @include m.grid(2, 4rem);
+            margin: 2rem 0;
+            padding: 2rem
+        }
+
+    }
+    
+    &__imagenes-contenedor {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;// Para que la galería se quede fija al hacer scroll
+        top: 2rem;
+
+        @include m.desktop {
+            flex-direction: row; // Cambia a fila en escritorio
+        }
+    }
+
+    &-detalle {
+        @include m.tablet {            
+            @include m.grid(2, 4rem);
+            margin: 2rem 0;
+            padding: 2rem
+        }
+    }
+}
+
+.galeria-miniaturas {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    padding: .5rem;
+    
+
+    @include m.desktop {
+        flex-direction: column; // Cambia a fila en escritorio
+    }
+
+    .galeria-miniatura__contenedor {
+        border: 2px solid lighten(v.$gris, 30%);
+        border-radius: .5rem;
+        padding: .3rem;
+        cursor: pointer;
+        transition: border-color .3s ease;
+        overflow: hidden;
+        flex-shrink: 0; // Evita que las miniaturas se encojan
+        width: 80px; // Ancho fijo para cada miniatura
+
+        &:hover {
+            border-color: v.$azul;
+        }
+
+        &.activa {
+            border-color: v.$azul;
+        }
+    }
+
+    .galeria-miniatura__imagen {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: .3rem;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+    }
+}
+
+.galeria-principal {
+    flex-grow: 1; // Ocupa el espacio restante
+    position: relative;
+    border: 1px solid lighten(v.$gris, 30%);
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: v.$blanco;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    #imagen-principal-producto {
+        max-height: 500px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .galeria-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(v.$blanco, 0.8);
+        border: 1px solid lighten(v.$gris, 20%);
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: v.$gris-oscuro;
+        transition: all .3s ease;
+        @include m.shadow;
+
+        &:hover {
+            background-color: v.$blanco;
+            border-color: v.$azul;
+            color: v.$azul;
+        }
+
+        &--anterior {
+            left: 1.5rem;
+        }
+        &--siguiente {
+            right: 1.5rem;
+        }
+    }
+}
+
+.producto__informacion__basica {
+    .producto__header {
+        h1.producto__titulo {
+            @include m.headings;
+            font-size: 3.6rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: v.$bold;
+            color: v.$azul;
+            padding-bottom: 2rem;
+        }
+    }
+
+    .producto__precio {
+        background-color: lighten(v.$gris, 35%);
+        padding: 2rem;
+        border-radius: .5rem;
+        border-left: 4px solid v.$azul;
+
+        p {
+            margin: 0 0 .5rem 0;
+            font-size: 1.4rem;
+            color: v.$gris;
+        }
+
+        .producto__precio-anterior {
+            font-size: 3.2rem;
+            color: v.$gris-oscuro;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .producto__precio-actual {
+            font-size: 3.2rem;
+            color: v.$gris-oscuro;
+            font-weight: v.$regular;
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        .producto__precio-descuento {
+            font-size: 1.8rem;
+            font-weight: v.$bold;
+            color: v.$verde;
+        }
+    }
+}
+
+.contenedor__boton { // Nombre corregido a singular
+    display: flex; // Se añade display:flex a la regla base
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+
+    @include m.tablet {
+        // En tablet, queremos que sigan uno debajo del otro.
+        // Como hereda flex-direction: column de la regla base,
+        // podemos simplemente alinear los ítems.
+        align-items: flex-start; // Alinea los botones a la izquierda
+    }
+
+    @include m.desktop {
+        // En desktop, cambiamos la dirección a fila.
+        flex-direction: row;
+        justify-content: left;
+        margin-top: 4rem;
+        gap: 2rem; // Añadimos un espacio entre los botones
+    }
+}
+
+.contacto__boton {
+    @include m.boton(v.$azul, v.$blanco);
+    text-transform: uppercase;
+    font-size: 2.2rem; // Tamaño de fuente ajustado
+    margin: 1rem 0; // Espacio vertical entre botones
+    border-radius: .5rem;
+    width: 100%; // Ocupa todo el ancho en móvil/tablet
+    
+    @include m.desktop {
+        width: auto; // Ancho automático en desktop
+        margin: 0; // Reseteamos el margen
+    }
+}
+
+.whatsapp__boton {
+    @include m.boton(v.$verde, v.$blanco);
+    font-size: 2.2rem; // Tamaño de fuente ajustado
+    margin: 1rem 0;
+    border-radius: .5rem;
+    width: 100%;
+
+    @include m.desktop {
+        width: auto;
+        margin: 0;
+    }
+}
+
+.producto__caracteristicas{
+    margin: 2rem 0;
+    padding: 2rem;
+    background-color: lighten(v.$gris, 35%);
+    border-radius: .5rem;
+
+    h2 {
+        @include m.headings;
+        font-size: 2.4rem;
+        color: v.$gris-oscuro;
+        margin-bottom: 1.5rem;
+        font-weight: v.$bold;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+
+        li {
+            font-size: 2rem;
+            color: v.$gris-oscuro;
+            margin-bottom: .5rem;
+
+            &:before {
+                content: '✓';
+                color: v.$verde;
+                margin-right: .5rem;
+            }
+        }
+    }
+}
+.producto__descripcion {
+    margin: 2rem 2rem 0 2rem;
+    &-texto {
+        margin: 2rem 0;
+        font-size: 2rem;
+        line-height: 1.3;
+        color: v.$gris-oscuro;
+        font-weight: v.$regular;
+        text-align: left;
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+    }
+}

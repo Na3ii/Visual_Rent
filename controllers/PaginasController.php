@@ -10,11 +10,31 @@ use Classes\Paginacion;
 use Model\Contacto;
 use Classes\Email;
 use Model\Galeria;
+use Model\ImagenesProducto;
+use Model\CategoriaProducto;
 
 class PaginasController {
     public static function index(Router $router) {
 
         $productos = Producto :: getVarios(4);
+        // Para cada producto, obtener su imagen principal
+        foreach ($productos as $producto) {
+            $imagenPrincipal = ImagenesProducto::whereArray(['producto_id' => $producto->id, 'is_main' => 1]);
+            if (!empty($imagenPrincipal)) {
+                $producto->imagen_url = $imagenPrincipal[0]->url;
+            } else {
+                // Fallback si no hay 'is_main', tomar la primera por orden o la primera encontrada
+                $imagenesProd = ImagenesProducto::belongsTo('producto_id', $producto->id);
+                if(!empty($imagenesProd)) {
+                    usort($imagenesProd, function($a, $b) { return $a->orden - $b->orden; });
+                    $producto->imagen_url = $imagenesProd[0]->url;
+                } else {
+                    $producto->imagen_url = 'placeholder-product'; // Placeholder si no hay imágenes
+                }
+            }
+        }
+
+       // debuguear($productos);
         $categorias = CategoriaServicio::getVarios(3);
         $imagenes = Galeria::getVarios(3);
 
@@ -44,10 +64,51 @@ class PaginasController {
         $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
         
         $router->render('paginas/index', [
-            'titulo' => 'Inicio',
+            'titulo' => 'Arriendo de equipos audiovisuales para tus eventos',
             'productos' => $productos,
             'categorias' => $categorias,
             'imagenes' => $imagenes,
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,                                                                                                                              
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription
+        ]);
+    }
+
+    public static function productos(Router $router) {
+        
+        $categorias = CategoriaProducto::all('ASC');
+
+        $productosLD = [];
+        foreach ($categorias as $categoria) {
+            $productosLD[] = [
+                "@context" => "https://schema.org",
+                "@type" => "Product",
+                "name" => $categoria->nombre,
+                "description" => $categoria->descripcion,
+                "image" => "https://visualrent.cl/img/categoria-productos/" . $categoria->imagen . ".webp",
+                "offers" => [
+                    "@type" => "Offer",
+                    "priceCurrency" => "CLP",
+                    "availability" => "https://schema.org/InStock"
+                ]
+            ];
+        }
+
+        // Si hay más de uno, usamos un array con "@graph"
+        $jsonLD = count($productosLD) > 1 ? [
+            "@context" => "https://schema.org",            
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@graph" => $productosLD
+        ] : $productosLD[0];
+
+        $metaDescription = "Descubre nuestros servicios para eventos: diseño gráfico, técnicos en terreno, iluminación, DJ y desarrollo de software. VisualRent te acompaña en cada detalle.";
+        $ogTitle = "Servicios para Eventos | VisualRent";
+        $ogDescription = "Diseño gráfico, DJ, técnicos, iluminación y desarrollo de software para eventos. VisualRent te acompaña con soluciones integrales.";
+
+        $router->render('paginas/productos/index', [
+            'titulo' => 'Equipos para Eventos en Santiago – Totems, Pantallas, Auidio y Más',
+            'categorias' => $categorias,
             'jsonLD' => $jsonLD,
             'metaDescription' => $metaDescription,
             'ogTitle' => $ogTitle,
@@ -55,43 +116,101 @@ class PaginasController {
         ]);
     }
     
-    public static function catalogo(Router $router) {
-
-        $productos = Producto :: all('ASC');
+    public static function categoriaProducto(Router $router) {
+        $id = $_GET['id'] ?? null;
+    
+        if (!$id) {
+            header('Location: /productos/index');
+            exit();
+        }
+    
+        $productos = Producto::belongsTo('categoria_id', $id);
+        $categoria = CategoriaProducto::find($id);
 
         $pagina_actual = $_GET['page'];
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
 
         if(!$pagina_actual || $pagina_actual < 1) {
-            header('Location: /catalogo?page=1');
+            header('Location: /productos/categoria?id=' . $categoria->id  . '&page=1#' . urlencode($categoria->nombre));
+            exit();
         }
-
+            
         $registros_por_pagina = 8;
-        $total_registros = Producto :: total();
+        $total_registros = Producto::total('categoria_id', $id); 
         $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros);
-        
-        if($paginacion -> pagina_actual > $paginacion -> totalPaginas()) {
-            header('Location: /catalogo?page=' . $paginacion -> totalPaginas());
+
+        if($total_registros > 0 && $paginacion -> pagina_actual > $paginacion -> totalPaginas()) {
+            header('Location: /productos/categoria?id=' . $categoria->id . '&page=' . $paginacion -> totalPaginas() . '#' . urlencode($categoria->nombre));
+            exit();
         }
 
-        $productos = Producto :: paginar($registros_por_pagina, $paginacion -> offset());
+        $productos = Producto :: paginarPorCategoria('categoria_id', $id, $registros_por_pagina, $paginacion -> offset());
+
+        // Para cada producto, obtener su imagen principal
+        foreach ($productos as $producto) {
+            $imagenPrincipal = ImagenesProducto::whereArray(['producto_id' => $producto->id, 'is_main' => 1]);
+            if (!empty($imagenPrincipal)) {
+                $producto->imagen_url = $imagenPrincipal[0]->url;
+            } else {
+                // Fallback si no hay 'is_main', tomar la primera por orden o la primera encontrada
+                $imagenesProd = ImagenesProducto::belongsTo('producto_id', $producto->id);
+                if(!empty($imagenesProd)) {
+                    usort($imagenesProd, function($a, $b) { return $a->orden - $b->orden; });
+                    $producto->imagen_url = $imagenesProd[0]->url;
+                } else {
+                    $producto->imagen_url = 'placeholder-product'; // Placeholder si no hay imágenes
+                }
+            }
+        }
 
         // Armar array de productos en formato Schema.org
         $productosLD = [];
         foreach ($productos as $producto) {
+
+            $urlImagenPrincipal = "https://visualrent.cl/img/productos/" . ($producto->imagen_url ?? 'placeholder-product') . ".webp";
+
             $productosLD[] = [
                 "@context" => "https://schema.org",
                 "@type" => "Product",
                 "name" => $producto->nombre,
                 "description" => $producto->descripcion,
-                "image" => $producto->imagen,
+                "image" => $urlImagenPrincipal,   
+                "sku" => "VR-" . $producto->id,
                 "offers" => [
                     "@type" => "Offer",
                     "priceCurrency" => "CLP", // o tu moneda
                     "price" => $producto->precio_informativo,
-                    "availability" => "https://schema.org/InStock"
+                    "availability" => ($producto->disponibles > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    "itemCondition" => "https://schema.org/UsedCondition",
+                    "businessFunction" => "https://schema.org/Rental",
+                    "shippingDetails" => [
+                        "@type" => "OfferShippingDetails",
+                        "shippingRate" => [
+                            "@type" => "MonetaryAmount",
+                            "value" => "80000",
+                            "currency" => "CLP"
+                        ],
+                        "shippingDestination" => [
+                            "@type" => "DefinedRegion",
+                            "addressCountry" => "CL",
+                            "addressRegion" => "RM"
+                        ],
+                        "shippingLabel" => "Incluye despacho, instalación y retiro. Fecha coordinada con el cliente."
+                    ],
+                    "hasMerchantReturnPolicy" => [
+                    "@type" => "MerchantReturnPolicy",
+                    "returnPolicyCategory" => "https://schema.org/NoReturnsRefundPolicy",
+                    "applicableCountry" => "CL",
+                    "returnMethod" => "https://schema.org/InStoreReturn",
+                    "returnFees" => "https://schema.org/ReturnFeesCustomerResponsibility",
+                    "merchantReturnDays" => 0
+                    ]
                 ]
             ];
+
+            $metaDescription = $producto->meta_description ?? "Explora nuestro catálogo de productos para eventos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
+            $ogTitle = $producto->og_title ?? "Catálogo VisualRent: Arriendo de Tecnología para Eventos";
+            $ogDescription = $producto->og_description ?? "Explora categorías de productos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
         }
 
         // Si hay más de uno, usamos un array con "@graph"
@@ -101,19 +220,247 @@ class PaginasController {
             "@graph" => $productosLD
         ] : $productosLD[0];
 
-        $metaDescription = "Explora nuestro catálogo de productos para eventos: tótems interactivos, pantallas LED, pendones y juegos como el Ciclón Millonario. VisualRent tiene lo que buscas.";
-        $ogTitle = "Catálogo VisualRent: Arriendo de Tecnología para Eventos";
-        $ogDescription = "Explora categorías de productos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
-
+        $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
+    
+        if (!$categoria) {
+            header('Location: /productos');
+            return;
+        }
+    
+        $router->render('paginas/productos/categoria', [
+            'titulo' => 'Productos de ' . $categoria->nombre,
+            'productos' => $productos,
+            'categoria' => $categoria,
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $metaDescription,
+            'ogTitle' => $ogTitle,
+            'paginacion' => $paginacion -> paginacion(),
+            'ogDescription' => $ogDescription
+        ]);
+    }
+    
+    public static function catalogo(Router $router) {
         
-        $router->render('paginas/catalogo', [
+        $pagina_actual = $_GET['page'];
+        $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
+
+        if(!$pagina_actual || $pagina_actual < 1) {
+            header('Location: /productos/catalogo?page=1');
+        }
+            
+        $registros_por_pagina = 8;
+        $total_registros = Producto :: total();
+        $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total_registros);
+
+        if($total_registros > 0 && $paginacion -> pagina_actual > $paginacion -> totalPaginas()) {
+            header('Location: /productos/catalogo?page=' . $paginacion -> totalPaginas());
+        }
+
+        $productos = Producto :: paginar($registros_por_pagina, $paginacion -> offset());
+        // Para cada producto, obtener su imagen principal
+        foreach ($productos as $producto) {
+            $imagenPrincipal = ImagenesProducto::whereArray(['producto_id' => $producto->id, 'is_main' => 1]);
+            if (!empty($imagenPrincipal)) {
+                $producto->imagen_url = $imagenPrincipal[0]->url;
+            } else {
+                // Fallback si no hay 'is_main', tomar la primera por orden o la primera encontrada
+                $imagenesProd = ImagenesProducto::belongsTo('producto_id', $producto->id);
+                if(!empty($imagenesProd)) {
+                    usort($imagenesProd, function($a, $b) { return $a->orden - $b->orden; });
+                    $producto->imagen_url = $imagenesProd[0]->url;
+                } else {
+                    $producto->imagen_url = 'placeholder-product'; // Placeholder si no hay imágenes
+                }
+            }
+        }
+
+        // Armar array de productos en formato Schema.org
+        $productosLD = [];
+        foreach ($productos as $producto) {
+
+            $urlImagenPrincipal = "https://visualrent.cl/img/productos/" . ($producto->imagen_url ?? 'placeholder-product') . ".webp";
+
+            $productosLD[] = [
+                "@context" => "https://schema.org",
+                "@type" => "Product",
+                "name" => $producto->nombre,
+                "description" => $producto->descripcion,
+                "image" => $urlImagenPrincipal,   
+                "sku" => "VR-" . $producto->id,
+                "offers" => [
+                    "@type" => "Offer",
+                    "priceCurrency" => "CLP", // o tu moneda
+                    "price" => $producto->precio_informativo,
+                    "availability" => ($producto->disponibles > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    "itemCondition" => "https://schema.org/UsedCondition",
+                    "businessFunction" => "https://schema.org/Rental",
+                    "shippingDetails" => [
+                        "@type" => "OfferShippingDetails",
+                        "shippingRate" => [
+                            "@type" => "MonetaryAmount",
+                            "value" => "80000",
+                            "currency" => "CLP"
+                        ],
+                        "shippingDestination" => [
+                            "@type" => "DefinedRegion",
+                            "addressCountry" => "CL",
+                            "addressRegion" => "RM"
+                        ],
+                        "shippingLabel" => "Incluye despacho, instalación y retiro. Fecha coordinada con el cliente."
+                    ],
+                    "hasMerchantReturnPolicy" => [
+                    "@type" => "MerchantReturnPolicy",
+                    "returnPolicyCategory" => "https://schema.org/NoReturnsRefundPolicy",
+                    "applicableCountry" => "CL",
+                    "returnMethod" => "https://schema.org/InStoreReturn",
+                    "returnFees" => "https://schema.org/ReturnFeesCustomerResponsibility",
+                    "merchantReturnDays" => 0
+                    ]
+                ]
+            ];
+
+            $metaDescription = $producto->meta_description ?? "Explora nuestro catálogo de productos para eventos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
+            $ogTitle = $producto->og_title ?? "Catálogo VisualRent: Arriendo de Tecnología para Eventos";
+            $ogDescription = $producto->og_description ?? "Explora categorías de productos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.";
+        }
+
+        // Si hay más de uno, usamos un array con "@graph"
+        $jsonLD = count($productosLD) > 1 ? [
+            "@context" => "https://schema.org",    
+            "image" => "https://visualrent.cl/img/og-image.jpg",
+            "@graph" => $productosLD
+        ] : $productosLD[0];
+        
+        $router->render('paginas/productos/catalogo', [
             'titulo' => 'Catálogo de Productos para Eventos: Tótems, Pantallas, Juegos y Más',
             'productos' => $productos,
             'paginacion' => $paginacion -> paginacion(),
             'jsonLD' => $jsonLD,
-            'metaDescription' => $metaDescription,
-            'ogTitle' => $ogTitle,
-            'ogDescription' => $ogDescription
+            'metaDescription' => "Explora nuestro catálogo de productos para eventos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.",
+            'ogTitle' => "Catálogo VisualRent: Arriendo de Tecnología para Eventos",
+            'ogDescription' => "Explora categorías de productos: tótems, pantallas, juegos y pendones LED. Soluciones interactivas y visuales.",
+            'ogImage' => 'https://visualrent.cl/img/og-image.jpg'
+        ]);
+    }
+
+    public static function detalleProducto(Router $router) {
+        $id = $_GET['id'] ?? null;
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+
+        if (!$id) {
+            header('Location: /productos/catalogo');
+            exit;
+        }
+
+        $producto = Producto::find($id);
+
+        if (!$producto) {
+            header('Location: /productos/catalogo'); 
+            exit;
+        }
+
+        $imagenes_producto = ImagenesProducto::belongsTo('producto_id', $producto->id);
+        usort($imagenes_producto, function ($a, $b) {
+            if ($a->is_main != $b->is_main) {
+                return $b->is_main - $a->is_main; 
+            }
+            return $a->orden - $b->orden; 
+        });
+        
+        $main_image_url = 'placeholder-product'; 
+        if (!empty($imagenes_producto)) {
+            $main_image_url = $imagenes_producto[0]->url; 
+        }
+
+        $related_productos_raw = Producto::whereArray(['categoria_id' => $producto->categoria_id]);
+        $related_productos = [];
+        if (is_array($related_productos_raw)) {
+            foreach($related_productos_raw as $rp) {
+                if (count($related_productos) >= 5) break; 
+                if ($rp->id != $producto->id) {
+                    // Aquí asignaremos a $rp->imagen_principal_url, así que esta propiedad también debe existir en Producto.php
+                    // o manejarlo de otra forma si $rp es un array y no un objeto Producto con esa propiedad.
+                    // Por ahora, asumiendo que se añade dinámicamente o que se debe declarar en Producto.php también.
+                    $img_principal_rel_obj_array = ImagenesProducto::whereArray(['producto_id' => $rp->id, 'is_main' => 1]);
+                     if (empty($img_principal_rel_obj_array) ) { 
+                         $temp_imgs = ImagenesProducto::belongsTo('producto_id', $rp->id);
+                         if(!empty($temp_imgs)) {
+                            usort($temp_imgs, function($a, $b) { return $a->orden - $b->orden; });
+                            // $rp->imagen_principal_url = $temp_imgs[0]->url; // Descomentar si $imagen_principal_url está declarada
+                        } else {
+                            // $rp->imagen_principal_url = 'placeholder-product'; // Descomentar
+                        }
+                    } else {
+                         // $rp->imagen_principal_url = $img_principal_rel_obj_array[0]->url; // Descomentar
+                    }
+                    // Para evitar el error de propiedad dinámica en $rp, si $rp es un objeto Producto:
+                    // Primero, asegúrate de que 'imagen_principal_url' esté declarada en la clase Producto.
+                    // Luego, asigna el valor:
+                    $img_principal_url_for_related = 'placeholder-product';
+                    if (!empty($img_principal_rel_obj_array)) {
+                        $img_principal_url_for_related = $img_principal_rel_obj_array[0]->url;
+                    } else {
+                        $temp_imgs = ImagenesProducto::belongsTo('producto_id', $rp->id);
+                        if(!empty($temp_imgs)) {
+                            usort($temp_imgs, function($a, $b) { return $a->orden - $b->orden; });
+                            $img_principal_url_for_related = $temp_imgs[0]->url;
+                        }
+                    }
+                    $rp->imagen_principal_url = $img_principal_url_for_related; // Asignación después de calcularla
+                    
+                    $related_productos[] = $rp;
+                }
+            }
+        }
+        
+        $categoria = CategoriaProducto::find($producto->categoria_id);
+
+        $json_imagenes = json_encode($imagenes_producto);
+
+        $imagenesJsonLd = array_map(function($img) {
+            return "https://visualrent.cl/img/productos/" . $img->url . ".webp"; 
+        }, $imagenes_producto);
+
+        $jsonLD = [
+            "@context" => "https://schema.org",
+            "@type" => "Product",
+            "name" => $producto->nombre,
+            "description" => $producto->meta_description ?: strip_tags($producto->descripcion),
+            "image" => !empty($imagenesJsonLd) ? $imagenesJsonLd : ["https://visualrent.cl/img/productos/" . $main_image_url . ".webp"], 
+            "sku" => "VR-" . $producto->id, 
+            "brand" => [
+                "@type" => "Brand", 
+                "name" => "Visual Rent" 
+            ],
+            "offers" => [
+                "@type" => "Offer",
+                "priceCurrency" => "CLP", 
+                "price" => $producto->precio_informativo,
+                "availability" => ($producto->disponibles > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                "itemCondition" => "https://schema.org/UsedCondition", 
+                "businessFunction" => "https://schema.org/Rental",
+                "url" => "https://visualrent.cl/producto?id=" . $producto->id 
+            ]
+        ];
+        if ($categoria) {
+            $jsonLD["category"] = $categoria->nombre;
+        }
+
+        $router->render('paginas/productos/detalle', [
+            'titulo' => $producto->nombre,
+            'producto' => $producto,
+            'imagenes' => $imagenes_producto, 
+            'main_image_url' => $main_image_url, 
+            'related_productos' => $related_productos,
+            'categoria' => $categoria,
+            'json_imagenes' => $json_imagenes,
+            'jsonLD' => $jsonLD,
+            'metaDescription' => $producto->meta_description ?: strip_tags(substr($producto->descripcion, 0, 155)),
+            'ogTitle' => $producto->og_title ?: $producto->nombre . " | Visual Rent",
+            'ogDescription' => $producto->og_description ?: strip_tags(substr($producto->descripcion, 0, 155)),
+            'ogImage' => !empty($imagenes_producto) ? "https://visualrent.cl/img/productos/" . $imagenes_producto[0]->url . ".webp" : 'https://visualrent.cl/img/productos/' . $main_image_url . '.webp' 
         ]);
     }
 
@@ -167,7 +514,7 @@ class PaginasController {
         $ogTitle = "Servicios para Eventos | VisualRent";
         $ogDescription = "Diseño gráfico, DJ, técnicos, iluminación y desarrollo de software para eventos. VisualRent te acompaña con soluciones integrales.";
 
-        $router->render('paginas/servicios', [
+        $router->render('paginas/servicios/index', [
             'titulo' => 'Servicios para Eventos en Santiago – Diseño, DJ, Iluminación y Más',
             'categorias' => $categorias,
             'jsonLD' => $jsonLD,
@@ -177,7 +524,7 @@ class PaginasController {
         ]);
     }
     
-    public static function verCategoria(Router $router) {
+    public static function categoriaServicio(Router $router) {
         $id = $_GET['id'] ?? null;
     
         if (!$id) {
@@ -219,7 +566,7 @@ class PaginasController {
             return;
         }
     
-        $router->render('paginas/categoria', [
+        $router->render('paginas/servicios/categoria', [
             'titulo' => 'Servicios de ' . $categoria->nombre,
             'servicios' => $servicios,
             'categoria' => $categoria,
