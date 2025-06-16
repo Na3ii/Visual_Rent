@@ -10,6 +10,17 @@
 
     gtag('config', 'G-6CYHYNH3C3');
     </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17167237777">
+    </script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-17167237777');
+    </script>
     <meta name="google-site-verification" content="2c9p05aniqD4mjmzRfxaaArmLNxD1FPqMyCSj61dx1A" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">

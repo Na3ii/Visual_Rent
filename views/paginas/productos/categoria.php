@@ -1,6 +1,6 @@
 <main class="productos">
-        <h1 class="productos__heading">Catálogo De Productos En Arriendo</h1>
-        <p class="productos__descripcion">Descubre nuestro catálogo de productos en arriendo. Encuentra artículos para todas tus necesidades con precios competitivos y opciones de alquiler flexibles.</p>
+        <h1 class="productos__heading"><?= $categoria->nombre; ?> En Arriendo</h1>
+        <p class="productos__descripcion">Descubre nuestro catálogo de <?= $categoria->nombre; ?> en arriendo. Encuentra artículos para todas tus necesidades con precios competitivos y opciones de alquiler flexibles.</p>
         <div class="productos__grid">
                 <?php foreach($productos as $producto) { ?>
                         <div class="producto">
