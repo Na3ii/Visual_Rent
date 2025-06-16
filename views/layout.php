@@ -21,6 +21,13 @@
 
     gtag('config', 'AW-17167237777');
     </script>
+    <!-- Google tag (gtag.js) event -->
+    <script>
+    gtag('event', 'form_submit', {
+        // <event_parameters>
+    });
+    </script>
+
     <meta name="google-site-verification" content="2c9p05aniqD4mjmzRfxaaArmLNxD1FPqMyCSj61dx1A" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
