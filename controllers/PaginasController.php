@@ -60,7 +60,7 @@ class PaginasController {
         ];
 
         $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
-        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, pantallas y Equipos Audiovisuales para Eventos";
         $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
         
         $router->render('paginas/index', [
@@ -221,7 +221,7 @@ class PaginasController {
         ] : $productosLD[0];
 
         $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
-        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, pantallas y Equipos Audiovisuales para Eventos";
         $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
     
         if (!$categoria) {
@@ -294,7 +294,7 @@ class PaginasController {
                     "priceCurrency" => "CLP", // o tu moneda
                     "price" => $producto->precio_informativo,
                     "availability" => ($producto->disponibles > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                    "itemCondition" => "https://schema.org/UsedCondition",
+                    "itemCondition" => "https://schema.org/NewCondition",
                     "businessFunction" => "https://schema.org/Rental",
                     "shippingDetails" => [
                         "@type" => "OfferShippingDetails",
@@ -439,9 +439,31 @@ class PaginasController {
                 "priceCurrency" => "CLP", 
                 "price" => $producto->precio_informativo,
                 "availability" => ($producto->disponibles > 0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                "itemCondition" => "https://schema.org/UsedCondition", 
+                "itemCondition" => "https://schema.org/NewCondition", 
                 "businessFunction" => "https://schema.org/Rental",
                 "url" => "https://visualrent.cl/producto?id=" . $producto->id 
+            ],
+            "shippingDetails" => [
+                "@type" => "OfferShippingDetails",
+                "shippingRate" => [
+                    "@type" => "MonetaryAmount",
+                    "value" => "80000",
+                    "currency" => "CLP"
+                ],
+                "shippingDestination" => [
+                    "@type" => "DefinedRegion",
+                    "addressCountry" => "CL",
+                    "addressRegion" => "RM"
+                ],
+                "shippingLabel" => "Incluye despacho, instalación y retiro. Fecha coordinada con el cliente."
+            ],
+            "hasMerchantReturnPolicy" => [
+            "@type" => "MerchantReturnPolicy",
+            "returnPolicyCategory" => "https://schema.org/NoReturnsRefundPolicy",
+            "applicableCountry" => "CL",
+            "returnMethod" => "https://schema.org/InStoreReturn",
+            "returnFees" => "https://schema.org/ReturnFeesCustomerResponsibility",
+            "merchantReturnDays" => 0
             ]
         ];
         if ($categoria) {
@@ -558,7 +580,7 @@ class PaginasController {
         ] : $serviciosLD[0];
 
         $metaDescription = "Arriendo de equipos audiovisuales profesionales para tus eventos. Experiencias inolvidables con Visual Rent. Cotiza online.";
-        $ogTitle = "Visual Rent | Arriendo de Tótems, patanllas y Equipos Audiovisuales para Eventos";
+        $ogTitle = "Visual Rent | Arriendo de Tótems, pantallas y Equipos Audiovisuales para Eventos";
         $ogDescription = "Transforma tu evento en una experiencia inolvidable con nuestros equipos audiovisuales de alta tecnología.";
     
         if (!$categoria) {
