@@ -228,6 +228,8 @@ class PaginasController {
             header('Location: /productos');
             return;
         }
+
+        $url_canonica = "https://visualrent.cl/productos/categoria?id=" . $categoria->id;
     
         $router->render('paginas/productos/categoria', [
             'titulo' => 'Productos de ' . $categoria->nombre,
@@ -237,7 +239,8 @@ class PaginasController {
             'metaDescription' => $metaDescription,
             'ogTitle' => $ogTitle,
             'paginacion' => $paginacion -> paginacion(),
-            'ogDescription' => $ogDescription
+            'ogDescription' => $ogDescription,
+            'url_canonica' => $url_canonica,
         ]);
     }
     
@@ -470,6 +473,8 @@ class PaginasController {
             $jsonLD["category"] = $categoria->nombre;
         }
 
+        $url_canonica_producto = "https://visualrent.cl/producto?id=" . $producto->id;
+
         $router->render('paginas/productos/detalle', [
             'titulo' => $producto->nombre,
             'producto' => $producto,
@@ -482,7 +487,8 @@ class PaginasController {
             'metaDescription' => $producto->meta_description ?: strip_tags(substr($producto->descripcion, 0, 155)),
             'ogTitle' => $producto->og_title ?: $producto->nombre . " | Visual Rent",
             'ogDescription' => $producto->og_description ?: strip_tags(substr($producto->descripcion, 0, 155)),
-            'ogImage' => !empty($imagenes_producto) ? "https://visualrent.cl/img/productos/" . $imagenes_producto[0]->url . ".webp" : 'https://visualrent.cl/img/productos/' . $main_image_url . '.webp' 
+            'ogImage' => !empty($imagenes_producto) ? "https://visualrent.cl/img/productos/" . $imagenes_producto[0]->url . ".webp" : 'https://visualrent.cl/img/productos/' . $main_image_url . '.webp',
+            'url_canonica' => $url_canonica_producto
         ]);
     }
 
@@ -587,6 +593,8 @@ class PaginasController {
             header('Location: /servicios');
             return;
         }
+
+        $url_canonica = "https://visualrent.cl/servicios/categoria?id=" . $categoria->id;
     
         $router->render('paginas/servicios/categoria', [
             'titulo' => 'Servicios de ' . $categoria->nombre,
@@ -595,7 +603,8 @@ class PaginasController {
             'jsonLD' => $jsonLD,
             'metaDescription' => $metaDescription,
             'ogTitle' => $ogTitle,
-            'ogDescription' => $ogDescription
+            'ogDescription' => $ogDescription,
+            'url_canonica' => $url_canonica
         ]);
     }
 

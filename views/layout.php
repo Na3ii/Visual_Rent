@@ -63,7 +63,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/build/css/app.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://visualrent.cl<?php echo isset($vista) ? '/' . $vista : ''; ?>" />
+    <?php if (isset($url_canonica) && $url_canonica) { ?>
+        <link rel="canonical" href="<?= htmlspecialchars($url_canonica); ?>" />
+    <?php } else { ?>
+        <link rel="canonical" href="https://visualrent.cl<?= isset($vista) ? '/' . $vista : ''; ?>" />
+    <?php } ?>
     <link rel="alternate" href="https://visualrent.cl" hreflang="es-cl" />
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin="" defer></script>
 </head>
