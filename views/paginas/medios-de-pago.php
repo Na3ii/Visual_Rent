@@ -8,13 +8,12 @@
   <h3 class="pago__subheading">Métodos disponibles</h3>
   <ul class="pago__lista">
     <li>Transferencia electrónica (sin recargos)</li>
-    <li>Tarjetas de crédito y débito a través de plataformas seguras</li>
     <li>Pago presencial en efectivo o tarjeta (previa coordinación)</li>
   </ul>
 
   <h3 class="pago__subheading">Condiciones de pago</h3>
   <p class="pago__parrafo">
-    Para confirmar una reserva, solicitamos el <strong>50% del valor total</strong> al momento de agendar el servicio. El <strong>50% restante se paga contraentrega</strong>, una vez que el equipo ha sido instalado o entregado en el lugar acordado.
+    Para confirmar una reserva, solicitamos el <strong>50% del valor total</strong> al momento de agendar el servicio. El <strong>50% restante se paga contra entrega</strong>, una vez que el equipo ha sido instalado o entregado en el lugar acordado.
   </p>
 
   <p class="pago__parrafo">
@@ -22,7 +21,7 @@
   </p>
 
   <p class="pago__parrafo">
-    Emitimos <strong>boleta o factura</strong> según lo solicitado por el cliente. En caso de requerir factura, es importante enviar los datos de facturación al momento de realizar la reserva.
+    Emitimos <strong>factura</strong> por que es importante enviar los datos de facturación al momento de realizar la reserva.
   </p>
 
   <p class="pago__parrafo">
