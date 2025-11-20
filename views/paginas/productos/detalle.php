@@ -105,7 +105,7 @@
                 <section class="faq__item">
                     <h4 class="faq__pregunta">¿Qué incluye el servicio de arriendo?</h4>
                     <p class="faq__respuesta">
-                    Todos nuestros servicios incluyen entrega, instalación, asistencia técnica y retiro. En algunos casos también ofrecemos soporte en tiempo real durante el evento para asegurar que todo funcione correctamente.
+                    Todos nuestros servicios incluyen instalación y asistencia técnica, en algunos casos también ofrecemos soporte en tiempo real durante el evento para asegurar que todo funcione correctamente. El costo de entrega y retiro se calcula al momento de la cotización dependiendo de la ubicacion de entrega.
                     </p>
                 </section>
 
