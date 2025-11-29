@@ -19,6 +19,7 @@
     </div>
         <div class="inicio__boton-contenedor">
             <a class="inicio__boton" href="/productos/catalogo">Ver Catálogo Completo</a>
+            <a class="inicio__boton" href="../../docs/CatalogoVisualrent2025.pdf">Descargar Catálogo PDF</a>
         </div>
 </section>
 
